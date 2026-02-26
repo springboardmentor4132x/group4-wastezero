@@ -1,0 +1,72 @@
+<div class="register-container">
+  <h2>Register</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div>
+      <label>Full Name</label>
+      <input type="text" formControlName="fullName" />
+      <small *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
+        Full Name is required
+      </small>
+    </div>
+
+    <div>
+      <label>Email</label>
+      <input type="email" formControlName="email" />
+      <small *ngIf="registerForm.get('email')?.touched">
+        <span *ngIf="registerForm.get('email')?.errors?.['required']">
+          Email is required
+        </span>
+        <span *ngIf="registerForm.get('email')?.errors?.['email']">
+          Invalid email format
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label>Password</label>
+      <input type="password" formControlName="password" />
+      <small *ngIf="registerForm.get('password')?.touched">
+        <span *ngIf="registerForm.get('password')?.errors?.['required']">
+          Password is required
+        </span>
+        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Minimum 6 characters required
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label>Confirm Password</label>
+      <input type="password" formControlName="confirmPassword" />
+      <small *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+        Passwords do not match
+      </small>
+    </div>
+
+    <div>
+      <label>Role</label>
+      <select formControlName="role">
+        <option value="">Select Role</option>
+        <option value="user">User (Citizen)</option>
+        <option value="volunteer">Volunteer (Pickup Agent)</option>
+        <option value="admin">Admin</option>
+      </select>
+      <small *ngIf="registerForm.get('role')?.touched && registerForm.get('role')?.invalid">
+        Role is required
+      </small>
+    </div>
+
+    <div>
+      <label>Location</label>
+      <input type="text" formControlName="location" />
+      <small *ngIf="registerForm.get('location')?.touched && registerForm.get('location')?.invalid">
+        Location is required
+      </small>
+    </div>
+
+    <button type="submit">Register</button>
+
+  </form>
+</div>

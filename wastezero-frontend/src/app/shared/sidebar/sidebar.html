@@ -1,0 +1,29 @@
+<div class="sidebar">
+
+  <h3>WasteZero</h3>
+
+  <!-- USER MENU -->
+  <div *ngIf="role === 'user'">
+    <a routerLink="/dashboard-user">Dashboard</a>
+    <a routerLink="/schedule-pickup">Schedule Pickup</a>
+    <a routerLink="/messages">Messages</a>
+    <a routerLink="/profile">Profile</a>
+  </div>
+
+  <!-- VOLUNTEER MENU -->
+  <div *ngIf="role === 'volunteer'">
+    <a routerLink="/dashboard-volunteer">Dashboard</a>
+    <a routerLink="/opportunities">Opportunities</a>
+    <a routerLink="/messages">Messages</a>
+    <a routerLink="/profile">Profile</a>
+  </div>
+
+  <!-- ADMIN MENU -->
+  <div *ngIf="role === 'admin'">
+    <a routerLink="/dashboard-admin">Dashboard</a>
+    <a routerLink="/admin">Admin Panel</a>
+    <a routerLink="/messages">Messages</a>
+    <a routerLink="/profile">Profile</a>
+  </div>
+
+</div>

@@ -1,27 +1,20 @@
-<div class="dashboard-layout">
+<h2 class="text-3xl font-bold mb-8">User Dashboard</h2>
 
-  <app-sidebar></app-sidebar>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-  <div class="dashboard-content">
-    <h2>User Dashboard</h2>
+  <div class="bg-white p-6 rounded-2xl shadow">
+    <p class="text-gray-500">Total Pickups</p>
+    <h3 class="text-4xl font-bold text-green-600">12</h3>
+  </div>
 
-    <div class="stats">
-      <div class="card">
-        <h4>Total Pickup Requests</h4>
-        <p>0</p>
-      </div>
+  <div class="bg-white p-6 rounded-2xl shadow">
+    <p class="text-gray-500">Completed</p>
+    <h3 class="text-4xl font-bold text-blue-600">8</h3>
+  </div>
 
-      <div class="card">
-        <h4>Completed Pickups</h4>
-        <p>0</p>
-      </div>
-
-      <div class="card">
-        <h4>Pending Pickups</h4>
-        <p>0</p>
-      </div>
-    </div>
-
+  <div class="bg-white p-6 rounded-2xl shadow">
+    <p class="text-gray-500">Pending</p>
+    <h3 class="text-4xl font-bold text-red-500">4</h3>
   </div>
 
 </div>

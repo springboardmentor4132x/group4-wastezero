@@ -1,72 +1,95 @@
-<div class="register-container">
-  <h2>Register</h2>
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-100 via-white to-green-200 px-4">
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md transition-all duration-300">
 
-    <div>
-      <label>Full Name</label>
-      <input type="text" formControlName="fullName" />
-      <small *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
-        Full Name is required
-      </small>
-    </div>
+    <h2 class="text-3xl font-bold text-center text-green-600 mb-2">
+      🌱 Create Account
+    </h2>
 
-    <div>
-      <label>Email</label>
-      <input type="email" formControlName="email" />
-      <small *ngIf="registerForm.get('email')?.touched">
-        <span *ngIf="registerForm.get('email')?.errors?.['required']">
-          Email is required
-        </span>
-        <span *ngIf="registerForm.get('email')?.errors?.['email']">
-          Invalid email format
-        </span>
-      </small>
-    </div>
+    <p class="text-center text-gray-500 mb-8 text-sm">
+      Join WasteZero & Start Recycling Smartly
+    </p>
 
-    <div>
-      <label>Password</label>
-      <input type="password" formControlName="password" />
-      <small *ngIf="registerForm.get('password')?.touched">
-        <span *ngIf="registerForm.get('password')?.errors?.['required']">
-          Password is required
-        </span>
-        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">
-          Minimum 6 characters required
-        </span>
-      </small>
-    </div>
+    <form [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()"
+          class="space-y-5">
 
-    <div>
-      <label>Confirm Password</label>
-      <input type="password" formControlName="confirmPassword" />
-      <small *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
-        Passwords do not match
-      </small>
-    </div>
+      <!-- Name -->
+      <div>
+        <input type="text"
+               formControlName="name"
+               placeholder="Full Name"
+               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      </div>
 
-    <div>
-      <label>Role</label>
-      <select formControlName="role">
-        <option value="">Select Role</option>
-        <option value="user">User (Citizen)</option>
-        <option value="volunteer">Volunteer (Pickup Agent)</option>
-        <option value="admin">Admin</option>
-      </select>
-      <small *ngIf="registerForm.get('role')?.touched && registerForm.get('role')?.invalid">
-        Role is required
-      </small>
-    </div>
+      <!-- Email -->
+      <div>
+        <input type="email"
+               formControlName="email"
+               placeholder="Email"
+               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      </div>
 
-    <div>
-      <label>Location</label>
-      <input type="text" formControlName="location" />
-      <small *ngIf="registerForm.get('location')?.touched && registerForm.get('location')?.invalid">
-        Location is required
-      </small>
-    </div>
+      <!-- Password -->
+      <div>
+        <input type="password"
+               formControlName="password"
+               placeholder="Password (min 6 characters)"
+               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      </div>
 
-    <button type="submit">Register</button>
+      <!-- Confirm Password -->
+      <div>
+        <input type="password"
+               formControlName="confirmPassword"
+               placeholder="Confirm Password"
+               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      </div>
 
-  </form>
+      <!-- Role -->
+      <div>
+        <select formControlName="role"
+                class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+          <option value="">Select Role</option>
+          <option value="user">User (Citizen)</option>
+          <option value="volunteer">Volunteer (Pickup Agent)</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <!-- Location -->
+      <div>
+        <input type="text"
+               formControlName="location"
+               placeholder="Location"
+               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="errorMessage"
+           class="bg-red-100 text-red-600 text-sm p-3 rounded-lg text-center">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Button -->
+      <button type="submit"
+              [disabled]="isLoading"
+              class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-md disabled:opacity-60">
+
+        {{ isLoading ? 'Creating Account...' : 'Register' }}
+
+      </button>
+
+    </form>
+
+    <p class="text-center text-sm text-gray-500 mt-6">
+      Already have an account?
+      <a routerLink="/login"
+         class="text-green-600 font-semibold hover:underline">
+        Login
+      </a>
+    </p>
+
+  </div>
+
 </div>

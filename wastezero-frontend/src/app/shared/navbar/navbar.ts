@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, TitleCasePipe],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements OnInit {
 
+  role: string | null = null;
+
+  ngOnInit(): void {
+    this.role = localStorage.getItem('role');
+  }
+
+  logout(): void {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
 }

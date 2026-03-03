@@ -1,29 +1,49 @@
-<div class="sidebar">
+<div class="fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white shadow-lg">
 
-  <h3>WasteZero</h3>
-
-  <!-- USER MENU -->
-  <div *ngIf="role === 'user'">
-    <a routerLink="/dashboard-user">Dashboard</a>
-    <a routerLink="/schedule-pickup">Schedule Pickup</a>
-    <a routerLink="/messages">Messages</a>
-    <a routerLink="/profile">Profile</a>
+  <div class="p-6 text-2xl font-bold border-b border-gray-700">
+    🌱 WasteZero
   </div>
 
-  <!-- VOLUNTEER MENU -->
-  <div *ngIf="role === 'volunteer'">
-    <a routerLink="/dashboard-volunteer">Dashboard</a>
-    <a routerLink="/opportunities">Opportunities</a>
-    <a routerLink="/messages">Messages</a>
-    <a routerLink="/profile">Profile</a>
-  </div>
+  <nav class="mt-6 px-4 space-y-2">
 
-  <!-- ADMIN MENU -->
-  <div *ngIf="role === 'admin'">
-    <a routerLink="/dashboard-admin">Dashboard</a>
-    <a routerLink="/admin">Admin Panel</a>
-    <a routerLink="/messages">Messages</a>
-    <a routerLink="/profile">Profile</a>
-  </div>
+    <!-- USER -->
+    <ng-container *ngIf="role === 'user'">
+      <a routerLink="/dashboard-user" class="block p-3 rounded-lg hover:bg-green-600 transition">
+        Dashboard
+      </a>
+      <a routerLink="/schedule-pickup" class="block p-3 rounded-lg hover:bg-green-600 transition">
+        Schedule Pickup
+      </a>
+    </ng-container>
+
+    <!-- VOLUNTEER -->
+    <ng-container *ngIf="role === 'volunteer'">
+      <a routerLink="/dashboard-volunteer" class="block p-3 rounded-lg hover:bg-blue-600 transition">
+        Dashboard
+      </a>
+      <a routerLink="/opportunities" class="block p-3 rounded-lg hover:bg-blue-600 transition">
+        Opportunities
+      </a>
+    </ng-container>
+
+    <!-- ADMIN -->
+    <ng-container *ngIf="role === 'admin'">
+      <a routerLink="/dashboard-admin" class="block p-3 rounded-lg hover:bg-red-600 transition">
+        Dashboard
+      </a>
+      <a routerLink="/admin" class="block p-3 rounded-lg hover:bg-red-600 transition">
+        Admin Panel
+      </a>
+    </ng-container>
+
+    <a routerLink="/messages" class="block p-3 rounded-lg hover:bg-purple-600 transition">
+      Messages
+    </a>
+
+    <a routerLink="/profile" class="block p-3 rounded-lg hover:bg-gray-600 transition">
+      Profile
+    </a>
+
+  </nav>
 
 </div>

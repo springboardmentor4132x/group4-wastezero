@@ -16,6 +16,9 @@ export class Navbar implements OnInit {
     this.role = localStorage.getItem('role');
   }
 
+  toggleDarkMode(): void {
+  document.documentElement.classList.toggle('dark');
+}
   logout(): void {
     localStorage.clear();
     window.location.href = '/login';

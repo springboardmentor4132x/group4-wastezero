@@ -1,15 +1,14 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';      // 🔒 Simple auth guard checking for token presence
+import { CanActivateFn, Router } from '@angular/router';
 
-export const authGuard: CanActivateFn = (route, state) => {  // 🔒 Simple auth guard checking for token presence
+export const authGuard: CanActivateFn = () => {
 
   const router = inject(Router);
-  const token = localStorage.getItem('token');  // ✅ Check if token exists
+  const token = localStorage.getItem('token');
 
   if (!token) {
-    router.navigate(['/login']);     // 🚫 Redirect to login if not authenticated
-    return false;
+    return router.createUrlTree(['/login']);
   }
 
-  return true;              // ✅ Allow access if token is present
+  return true; // ✅ Just allow access
 };

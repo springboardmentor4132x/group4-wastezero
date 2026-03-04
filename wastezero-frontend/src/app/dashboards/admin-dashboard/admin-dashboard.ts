@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, Sidebar],
+  imports: [CommonModule],
   templateUrl: './admin-dashboard.html',
-  styleUrl: './admin-dashboard.css',
+  styleUrl: './admin-dashboard.css'
 })
 export class AdminDashboard {
+
+  totalOpportunities = 12;
+  totalVolunteers = 34;
+  totalApplications = 21;
 
 }

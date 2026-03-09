@@ -1,0 +1,20 @@
+<div class="opp-container">
+    <h2>Available Pickup Opportunities</h2>
+    <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: #666;"
+        *ngIf="opportunities.length === 0">
+        <p>No new pickup opportunities available in your area right now.</p>
+        <p>Check back later!</p>
+    </div>
+
+    <div class="pickup-card" *ngFor="let opp of opportunities">
+        <div class="pickup-info">
+            <h4>📦 {{ opp.type }} ({{ opp.quantity }}kg)</h4>
+            <p>📍 <strong>Address:</strong> {{ opp.address }}</p>
+            <p>🕒 <strong>When:</strong> {{ opp.date }} at {{ opp.time }}</p>
+        </div>
+        <div class="pickup-actions">
+            <button class="btn" (click)="acceptPickup(opp.id)" style="width: auto; padding: 10px 20px;">Accept
+                Pickup</button>
+        </div>
+    </div>
+</div>

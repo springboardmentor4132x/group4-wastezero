@@ -14,14 +14,12 @@ router.post(
   opportunityController.createOpportunity
 );
 
-// Get opportunities (Volunteer view)
+// Get opportunities
 router.get(
   "/",
   authMiddleware,
-  opportunityController.getOpportunities
+  opportunityController.getAllOpportunities
 );
-
-module.exports = router;
 
 router.delete(
   "/:id",
@@ -36,3 +34,5 @@ router.put(
   roleMiddleware("admin"),
   opportunityController.updateOpportunity
 );
+
+module.exports = router;

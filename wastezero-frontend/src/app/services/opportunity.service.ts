@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -8,59 +8,35 @@ export class OpportunityService {
 
   private apiUrl = 'http://localhost:5000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getHeaders() {
-    const token = localStorage.getItem('token');
-
-    return {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      })
-    };
-  }
-
-  // Create Opportunity (Admin)
+  // Opportunities
   createOpportunity(data: any) {
-    return this.http.post(`${this.apiUrl}/opportunities`, data, this.getHeaders());
+    return this.http.post(`${this.apiUrl}/opportunities`, data);
   }
 
-  // Get Opportunities
   getOpportunities() {
-    return this.http.get(`${this.apiUrl}/opportunities`, this.getHeaders());
+    return this.http.get(`${this.apiUrl}/opportunities`);
   }
 
-  // Update Opportunity
   updateOpportunity(id: string, data: any) {
-    return this.http.put(`${this.apiUrl}/opportunities/${id}`, data, this.getHeaders());
+    return this.http.put(`${this.apiUrl}/opportunities/${id}`, data);
   }
 
-  // Delete Opportunity
   deleteOpportunity(id: string) {
-    return this.http.delete(`${this.apiUrl}/opportunities/${id}`, this.getHeaders());
+    return this.http.delete(`${this.apiUrl}/opportunities/${id}`);
   }
 
-  // Apply Opportunity (Volunteer)
+  // Applications
   applyOpportunity(opportunity_id: string) {
-    return this.http.post(
-      `${this.apiUrl}/applications/apply`,
-      { opportunity_id },
-      this.getHeaders()
-    );
+    return this.http.post(`${this.apiUrl}/applications/apply`, { opportunity_id });
   }
 
-  // Get Applications (Admin)
   getApplications() {
-    return this.http.get(`${this.apiUrl}/applications`, this.getHeaders());
+    return this.http.get(`${this.apiUrl}/applications`);
   }
 
-  // Accept / Reject Application
   updateApplicationStatus(id: string, status: string) {
-    return this.http.put(
-      `${this.apiUrl}/applications/${id}`,
-      { status },
-      this.getHeaders()
-    );
+    return this.http.put(`${this.apiUrl}/applications/${id}`, { status });
   }
-
 }

@@ -1,93 +1,110 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-100 via-white to-green-200 px-4">
 
-  <div class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md transition-all duration-300">
+  <div class="bg-white shadow-2xl rounded-[2.5rem] p-10 w-full max-w-lg transition-all duration-500 animate-fade-up">
 
-    <h2 class="text-3xl font-bold text-center text-green-600 mb-2">
-      🌱 Create Account
+    <div class="flex justify-center mb-6">
+      <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center text-3xl shadow-xl">🌱</div>
+    </div>
+
+    <h2 class="text-3xl font-black text-center text-gray-900 mb-2 uppercase tracking-tighter">
+      Create <span class="text-green-600">Account</span>
     </h2>
 
-    <p class="text-center text-gray-500 mb-8 text-sm">
-      Join WasteZero & Start Recycling Smartly
+    <p class="text-center text-gray-400 mb-8 text-xs font-bold uppercase tracking-widest">
+      Join the Industrial Recycling Revolution
     </p>
 
-    <form [formGroup]="registerForm"
-          (ngSubmit)="onSubmit()"
-          class="space-y-5">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
 
-      <!-- Name -->
-      <div>
-        <input type="text"
-               formControlName="name"
-               placeholder="Full Name"
-               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Name -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Full
+            Name</label>
+          <input type="text" formControlName="name" placeholder="Name"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300">
+          <div *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid"
+            class="text-red-500 text-[10px] font-bold mt-1 ml-1 uppercase">
+            Name is required
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Email
+            Address</label>
+          <input type="email" formControlName="email" placeholder="[EMAIL_ADDRESS]"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300">
+          <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+            class="text-red-500 text-[10px] font-bold mt-1 ml-1 uppercase">
+            Valid email required
+          </div>
+        </div>
       </div>
 
-      <!-- Email -->
-      <div>
-        <input type="email"
-               formControlName="email"
-               placeholder="Email"
-               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Role -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Your
+            Role</label>
+          <select formControlName="role"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300 appearance-none">
+            <option value="">Select Role</option>
+            <option value="user">User (Citizen)</option>
+            <option value="volunteer">Volunteer (Agent)</option>
+          </select>
+          <div *ngIf="registerForm.get('role')?.touched && registerForm.get('role')?.invalid"
+            class="text-red-500 text-[10px] font-bold mt-1 ml-1 uppercase">
+            Please select a role
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Location
+            (Optional)</label>
+          <input type="text" formControlName="location" placeholder="City, Country"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300">
+        </div>
       </div>
 
       <!-- Password -->
       <div>
-        <input type="password"
-               formControlName="password"
-               placeholder="Password (min 6 characters)"
-               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Secret
+          Password</label>
+        <input type="password" formControlName="password" placeholder="••••••••"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300">
+        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+          class="text-red-500 text-[10px] font-bold mt-1 ml-1 uppercase">
+          Min 6 characters required
+        </div>
       </div>
 
       <!-- Confirm Password -->
       <div>
-        <input type="password"
-               formControlName="confirmPassword"
-               placeholder="Confirm Password"
-               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
-      </div>
-
-      <!-- Role -->
-      <div>
-        <select formControlName="role"
-                class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
-          <option value="">Select Role</option>
-          <option value="user">User (Citizen)</option>
-          <option value="volunteer">Volunteer (Pickup Agent)</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
-
-      <!-- Location -->
-      <div>
-        <input type="text"
-               formControlName="location"
-               placeholder="Location"
-               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none">
+        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 ml-1">Confirm
+          Secret</label>
+        <input type="password" formControlName="confirmPassword" placeholder="••••••••"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-green-500 focus:bg-white focus:outline-none transition duration-300">
       </div>
 
       <!-- Error -->
       <div *ngIf="errorMessage"
-           class="bg-red-100 text-red-600 text-sm p-3 rounded-lg text-center">
-        {{ errorMessage }}
+        class="bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest p-4 rounded-2xl border border-red-100 text-center animate-shake">
+        ⚠️ {{ errorMessage }}
       </div>
 
       <!-- Button -->
-      <button type="submit"
-              [disabled]="isLoading"
-              class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-md disabled:opacity-60">
-
-        {{ isLoading ? 'Creating Account...' : 'Register' }}
-
+      <button type="submit" [disabled]="isLoading"
+        class="w-full bg-gray-900 text-white py-4 rounded-[2rem] font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-black hover:-translate-y-1 transition active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed mt-4">
+        {{ isLoading ? 'Processing...' : 'Verify & Join' }}
       </button>
 
     </form>
 
-    <p class="text-center text-sm text-gray-500 mt-6">
-      Already have an account?
-      <a routerLink="/login"
-         class="text-green-600 font-semibold hover:underline">
-        Login
-      </a>
+    <p class="text-center text-[10px] font-bold text-gray-400 mt-8 uppercase tracking-widest">
+      Already a member?
+      <a routerLink="/login" class="text-green-600 hover:text-green-700 transition">Log In Now</a>
     </p>
 
   </div>

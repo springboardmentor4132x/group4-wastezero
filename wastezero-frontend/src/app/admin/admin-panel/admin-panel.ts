@@ -20,10 +20,12 @@ export class AdminPanel implements OnInit {
   location = '';
 
   editingId: string | null = null;
+  errorMessage = '';
+  successMessage = '';
 
   opportunities: any[] = [];
 
-  constructor(private opportunityService: OpportunityService) {}
+  constructor(private opportunityService: OpportunityService) { }
 
   ngOnInit(): void {
     this.loadOpportunities();
@@ -32,7 +34,7 @@ export class AdminPanel implements OnInit {
   loadOpportunities() {
     this.opportunityService.getOpportunities().subscribe({
       next: (res: any) => {
-        this.opportunities = res;
+        this.opportunities = res.data;
       },
       error: (err) => {
         console.error(err);
@@ -41,11 +43,18 @@ export class AdminPanel implements OnInit {
   }
 
   createOpportunity() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    if (!this.title || !this.description || !this.skills || !this.duration || !this.location) {
+      this.errorMessage = 'All fields are required';
+      return;
+    }
 
     const data = {
       title: this.title,
       description: this.description,
-      requiredSkills: this.skills.split(','),
+      requiredSkills: this.skills.split(',').map(s => s.trim()),
       duration: this.duration,
       location: this.location
     };
@@ -53,32 +62,36 @@ export class AdminPanel implements OnInit {
     if (this.editingId) {
 
       this.opportunityService.updateOpportunity(this.editingId, data)
-      .subscribe({
-        next: () => {
+        .subscribe({
+          next: () => {
 
-          alert("Opportunity updated successfully");
+            this.successMessage = "Opportunity updated successfully";
 
-          this.resetForm();
-          this.loadOpportunities();
+            this.resetForm();
+            this.loadOpportunities();
 
-        },
-        error: (err) => console.error(err)
-      });
+          },
+          error: (err) => {
+            this.errorMessage = err.error?.message || "Error updating opportunity";
+          }
+        });
 
     } else {
 
       this.opportunityService.createOpportunity(data)
-      .subscribe({
-        next: () => {
+        .subscribe({
+          next: () => {
 
-          alert("Opportunity created successfully");
+            this.successMessage = "Opportunity created successfully";
 
-          this.resetForm();
-          this.loadOpportunities();
+            this.resetForm();
+            this.loadOpportunities();
 
-        },
-        error: (err) => console.error(err)
-      });
+          },
+          error: (err) => {
+            this.errorMessage = err.error?.message || "Error creating opportunity";
+          }
+        });
 
     }
 
@@ -103,16 +116,18 @@ export class AdminPanel implements OnInit {
     }
 
     this.opportunityService.deleteOpportunity(id)
-    .subscribe({
-      next: () => {
+      .subscribe({
+        next: () => {
 
-        alert("Opportunity deleted successfully");
+          alert("Opportunity deleted successfully");
 
-        this.loadOpportunities();
+          this.loadOpportunities();
 
-      },
-      error: (err) => console.error(err)
-    });
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || "Error deleting opportunity";
+        }
+      });
 
   }
 

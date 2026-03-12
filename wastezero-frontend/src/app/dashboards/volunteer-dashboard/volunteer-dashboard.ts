@@ -1,37 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-volunteer-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './volunteer-dashboard.html',
+  styleUrl: './volunteer-dashboard.css'
 })
 export class VolunteerDashboard implements OnInit {
 
   available = 0;
   accepted = 0;
   completed = 0;
+  userName: string | null = '';
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.animateCounter('available', 15, 1000);
-    this.animateCounter('accepted', 6, 1000);
-    this.animateCounter('completed', 9, 1000);
+    this.userName = localStorage.getItem('name');
+    this.loadStats();
   }
 
-  animateCounter(property: 'available' | 'accepted' | 'completed', target: number, duration: number) {
-    let start = 0;
-    const increment = target / (duration / 16);
-
-    const interval = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        (this as any)[property] = target;
-        clearInterval(interval);
-      } else {
-        (this as any)[property] = Math.floor(start);
+  loadStats() {
+    this.userService.getAvailablePickups().subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.available = res.data.length;
+        }
       }
-    }, 16);
+    });
+
+    this.userService.getMyPickups().subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          const myPickups = res.data as any[];
+          this.accepted = myPickups.filter(p => p.status === 'accepted' || p.status === 'on-the-way').length;
+          this.completed = myPickups.filter(p => p.status === 'completed').length;
+        }
+      }
+    })
   }
 
 }

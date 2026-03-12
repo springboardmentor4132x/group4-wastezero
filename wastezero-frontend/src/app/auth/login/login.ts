@@ -28,12 +28,8 @@ export class Login {
       password: ['', Validators.required]
     });
 
-    // 🔥 Auto redirect if already logged in
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-
-    if (token && role) {
-      this.redirectByRole(role);
+    if (this.authService.isLoggedIn()) {
+      this.redirectByRole(this.authService.getRole() || '');
     }
   }
 
@@ -47,41 +43,40 @@ export class Login {
     this.isLoading = true;
     this.errorMessage = '';
 
+    console.log("🚀 Attempting industrial authentication for:", this.loginForm.value.email);
+
     this.authService.login(this.loginForm.value)
       .subscribe({
         next: (res: any) => {
-
+          console.log("✅ Server Response:", res);
           this.isLoading = false;
 
-          // ✅ Store token & user data
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('role', res.role);
-          localStorage.setItem('name', res.name);
+          if (res && res.success === true) {
+            // Securely store registry identity
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('role', res.role);
+            localStorage.setItem('name', res.name);
+            localStorage.setItem('userId', res.userId);
 
-          // ✅ Redirect based on role
-          this.redirectByRole(res.role);
+            console.log("🗺️ Identity established. Redirecting to role-based dashboard...");
+            this.redirectByRole(res.role);
+          } else {
+            console.warn("⚠️ Authentication fault:", res.message);
+            this.errorMessage = res.message || 'Invalid credentials or system fault.';
+          }
         },
-
         error: (err) => {
+          console.error("🔥 Network/Server Error:", err);
           this.isLoading = false;
-          this.errorMessage = err?.error?.message || 'Login failed. Please try again.';
+          this.errorMessage = err?.error?.message || 'Login failed. Check backend infrastructure connectivity.';
         }
       });
   }
 
   private redirectByRole(role: string): void {
-
-    if (role === 'user') {
-      this.router.navigate(['/dashboard-user']);
-    }
-    else if (role === 'volunteer') {
-      this.router.navigate(['/dashboard-volunteer']);
-    }
-    else if (role === 'admin') {
-      this.router.navigate(['/dashboard-admin']);
-    }
-    else {
-      this.router.navigate(['/login']);
-    }
+    if (role === 'user') this.router.navigate(['/dashboard-user']);
+    else if (role === 'volunteer') this.router.navigate(['/dashboard-volunteer']);
+    else if (role === 'admin') this.router.navigate(['/dashboard-admin']);
+    else this.router.navigate(['/login']);
   }
 }

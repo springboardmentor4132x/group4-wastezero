@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Opportunity } from './opportunity.service';
+import { OpportunityService } from './opportunity.service';
 
-describe('Opportunity', () => {
-  let service: Opportunity;
+describe('OpportunityService', () => {
+  let service: OpportunityService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Opportunity);
+    service = TestBed.inject(OpportunityService);
   });
 
   it('should be created', () => {

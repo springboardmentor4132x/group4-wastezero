@@ -1,37 +1,83 @@
-<div class="animate-fade-up space-y-10">
+<div class="animate-fade-up space-y-12">
 
-  <div>
-    <h2 class="text-3xl font-bold text-gray-800">
-      Welcome 👋
-    </h2>
-    <p class="text-gray-500 mt-2">
-      Track your waste pickup activity.
-    </p>
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-4xl font-extrabold text-gray-800 tracking-tight">
+        Hello, <span class="text-green-600">{{ userName | titlecase }}</span>
+      </h2>
+      <p class="text-gray-400 mt-2 font-medium uppercase tracking-widest text-[10px]">
+        WasteZero Citizen Dashboard
+      </p>
+    </div>
+    <button routerLink="/schedule-pickup"
+      class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 hover:shadow-2xl transition hover:-translate-y-1">
+      ♻️ Schedule Pickup
+    </button>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-    <div class="bg-white p-6 rounded-3xl shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2">
-      <p class="text-gray-500 text-sm">Total Pickups</p>
-      <h3 class="text-4xl font-bold text-green-600 mt-3">
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-green-500">
+      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Total Pickups</p>
+      <h3 class="text-5xl font-black text-gray-800 mt-4">
         {{ totalPickups }}
       </h3>
     </div>
 
-    <div class="bg-white p-6 rounded-3xl shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2">
-      <p class="text-gray-500 text-sm">Completed</p>
-      <h3 class="text-4xl font-bold text-green-600 mt-3">
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-blue-500">
+      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Completed</p>
+      <h3 class="text-5xl font-black text-gray-800 mt-4">
         {{ completed }}
       </h3>
     </div>
 
-    <div class="bg-white p-6 rounded-3xl shadow-md hover:shadow-2xl transition duration-300 hover:-translate-y-2">
-      <p class="text-gray-500 text-sm">Pending</p>
-      <h3 class="text-4xl font-bold text-green-600 mt-3">
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-yellow-500">
+      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Pending</p>
+      <h3 class="text-5xl font-black text-gray-800 mt-4">
         {{ pending }}
       </h3>
     </div>
 
+    <!-- Personal Profile Details Card -->
+    <div
+      class="bg-gradient-to-br from-gray-800 to-black p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 text-white">
+      <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest">Account Details</p>
+      <div class="mt-4 space-y-2">
+        <p class="font-bold text-lg truncate">{{ userName }}</p>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          <span class="text-[10px] uppercase font-black tracking-widest text-green-400">Citizen Account</span>
+        </div>
+        <p class="text-[10px] text-gray-500 mt-2">Verified WasteZero Member</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent Activity Section -->
+  <div class="bg-white rounded-3xl shadow-xl p-8">
+    <h3 class="text-xl font-bold text-gray-800 mb-6">Recent Activity</h3>
+
+    <div *ngIf="recentActivity.length === 0" class="text-center py-10 text-gray-400">
+      <p>No recent activity. Start your first pickup today!</p>
+    </div>
+
+    <div class="space-y-4">
+      <div *ngFor="let act of recentActivity"
+        class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-2xl transition border-b last:border-b-0">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-gray-100">
+          {{ act.icon }}
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-gray-800">{{ act.title | titlecase }}</p>
+          <p class="text-sm text-gray-400">{{ act.desc }}</p>
+        </div>
+        <span class="text-xs text-gray-400 font-bold uppercase">{{ act.time }}</span>
+      </div>
+    </div>
   </div>
 
 </div>

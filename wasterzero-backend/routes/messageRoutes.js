@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
+const messageController = require('../controllers/messageController');
+
+router.post('/', authMiddleware, messageController.sendMessage);
+router.get('/users', authMiddleware, messageController.getChatUsers);
+router.get('/search', authMiddleware, messageController.searchUsers);
+router.get('/:otherUserId', authMiddleware, messageController.getMessages);
+
+module.exports = router;

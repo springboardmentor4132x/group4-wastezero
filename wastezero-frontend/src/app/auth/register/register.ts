@@ -29,7 +29,7 @@ export class Register {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       role: ['', Validators.required],
-      location: ['', Validators.required]
+      location: [''] // Made location optional to prevent registration blockers
     });
   }
 
@@ -50,13 +50,20 @@ export class Register {
 
     this.authService.register(this.registerForm.value)
       .subscribe({
-        next: () => {
+        next: (res: any) => {
+          console.log("Registration Response:", res);
           this.isLoading = false;
-          this.router.navigate(['/login']);
+          // Robust success check
+          if (res && (res.success === true || res.status === 201)) {
+            this.router.navigate(['/login']);
+          } else {
+            this.errorMessage = res.message || 'Registration failed. Please check your data.';
+          }
         },
         error: (err) => {
+          console.error("Registration Error:", err);
           this.isLoading = false;
-          this.errorMessage = err?.error?.message || 'Registration failed';
+          this.errorMessage = err?.error?.message || 'Connection failed. Ensure server is running.';
         }
       });
   }

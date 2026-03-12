@@ -7,19 +7,22 @@
   <div class="flex items-center gap-4">
 
     <!-- Dark Mode Toggle -->
-    <button (click)="toggleDarkMode()"
-            class="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
+    <button (click)="toggleDarkMode()" class="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
       🌙
     </button>
 
     <!-- User Name -->
-    <span class="text-gray-600 font-medium">
-      {{ role | titlecase }}
-    </span>
+    <div class="text-right flex flex-col">
+      <span class="text-gray-800 font-bold leading-none">
+        {{ displayName }}
+      </span>
+      <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+        {{ role }}
+      </span>
+    </div>
 
     <!-- Logout -->
-    <button (click)="logout()"
-            class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition shadow-md">
+    <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition shadow-md">
       Logout
     </button>
 

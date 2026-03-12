@@ -1,11 +1,10 @@
 const Opportunity = require("../models/Opportunity");
 
-// CREATE OPPORTUNITY (Admin only)
+// CREATE
 exports.createOpportunity = async (req, res) => {
   try {
     const { title, description, requiredSkills, duration, location } = req.body;
-
-    const opportunity = new Opportunity({
+    const opp = new Opportunity({
       title,
       description,
       requiredSkills,
@@ -13,77 +12,39 @@ exports.createOpportunity = async (req, res) => {
       location,
       ngo_id: req.user.id
     });
-
-    await opportunity.save();
-
-    res.status(201).json({
-      message: "Opportunity created successfully",
-      opportunity
-    });
-
+    await opp.save();
+    res.status(201).json({ success: true, message: "Opportunity created!", data: opp });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-
-
-// GET ALL OPPORTUNITIES (Volunteer view)
-exports.getOpportunities = async (req, res) => {
+// GET ALL
+exports.getAllOpportunities = async (req, res) => {
   try {
-
-    const opportunities = await Opportunity.find({
-      status: "open",
-      isDeleted: false
-    }).populate("ngo_id", "name email location");
-
-    res.json(opportunities);
-
+    const opps = await Opportunity.find().populate("ngo_id", "name email");
+    res.json({ success: true, data: opps });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-exports.deleteOpportunity = async (req, res) => {
-
-  try {
-
-    const { id } = req.params;
-
-    const opportunity = await Opportunity.findByIdAndUpdate(
-      id,
-      { isDeleted: true },
-      { new: true }
-    );
-
-    res.json({
-      message: "Opportunity deleted successfully",
-      opportunity
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-
-};
-
+// UPDATE
 exports.updateOpportunity = async (req, res) => {
   try {
-
-    const { id } = req.params;
-
-    const opportunity = await Opportunity.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }
-    );
-
-    res.json({
-      message: "Opportunity updated successfully",
-      opportunity
-    });
-
+    const opp = await Opportunity.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ success: true, message: "Updated successfully", data: opp });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// DELETE
+exports.deleteOpportunity = async (req, res) => {
+  try {
+    await Opportunity.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "Deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

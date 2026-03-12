@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, TitleCasePipe } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +12,20 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 export class Navbar implements OnInit {
 
   role: string | null = null;
+  displayName: string | null = null;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.role = localStorage.getItem('role');
+    this.role = this.authService.getRole();
+    this.displayName = this.authService.getName();
   }
 
   toggleDarkMode(): void {
-  document.documentElement.classList.toggle('dark');
-}
+    document.documentElement.classList.toggle('dark');
+  }
+
   logout(): void {
-    localStorage.clear();
-    window.location.href = '/login';
+    this.authService.logout();
   }
 }

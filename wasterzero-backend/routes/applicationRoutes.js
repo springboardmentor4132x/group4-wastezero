@@ -12,7 +12,7 @@ router.post(
   "/apply",
   authMiddleware,
   roleMiddleware("volunteer"),
-  applicationController.applyOpportunity
+  applicationController.apply
 );
 
 
@@ -30,7 +30,7 @@ router.put(
   "/:id",
   authMiddleware,
   roleMiddleware("admin"),
-  applicationController.updateApplicationStatus
+  applicationController.updateStatus
 );
 
 module.exports = router;

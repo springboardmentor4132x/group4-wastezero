@@ -1,13 +1,15 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
+
 export const routes: Routes = [
 
   // { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
-  path: '',
-  loadComponent: () =>
-    import('./landing/landing').then(m => m.Landing)
-},
+    path: '',
+    loadComponent: () =>
+      import('./landing/landing').then(m => m.Landing)
+  },
 
   // PUBLIC ROUTES
   {
@@ -27,14 +29,16 @@ export const routes: Routes = [
     path: 'dashboard-user',
     loadComponent: () =>
       import('./dashboards/user-dashboard/user-dashboard').then(m => m.UserDashboard),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['user'] }
   },
 
   {
     path: 'schedule-pickup',
     loadComponent: () =>
       import('./user/schedule-pickup/schedule-pickup').then(m => m.SchedulePickup),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['user'] }
   },
 
   // VOLUNTEER ROUTES (Protected)
@@ -42,14 +46,23 @@ export const routes: Routes = [
     path: 'dashboard-volunteer',
     loadComponent: () =>
       import('./dashboards/volunteer-dashboard/volunteer-dashboard').then(m => m.VolunteerDashboard),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['volunteer'] }
   },
 
   {
     path: 'opportunities',
     loadComponent: () =>
       import('./volunteer/opportunities/opportunities').then(m => m.Opportunities),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['volunteer'] }
+  },
+  {
+    path: 'volunteer/pickups',
+    loadComponent: () =>
+      import('./admin/pickups/pickups').then(m => m.AdminPickups),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['volunteer'] }
   },
 
   // ADMIN ROUTES (Protected)
@@ -57,20 +70,30 @@ export const routes: Routes = [
     path: 'dashboard-admin',
     loadComponent: () =>
       import('./dashboards/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] }
   },
-  
+
   {
-  path: 'admin/applications',
-  loadComponent: () =>
-    import('./admin/applications/applications').then(m => m.Applications),
-  canActivate: [authGuard]
-},
+    path: 'admin/applications',
+    loadComponent: () =>
+      import('./admin/applications/applications').then(m => m.Applications),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] }
+  },
   {
     path: 'admin',
     loadComponent: () =>
       import('./admin/admin-panel/admin-panel').then(m => m.AdminPanel),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] }
+  },
+  {
+    path: 'admin/pickups',
+    loadComponent: () =>
+      import('./admin/pickups/pickups').then(m => m.AdminPickups),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] }
   },
 
   // COMMON ROUTES (Protected)

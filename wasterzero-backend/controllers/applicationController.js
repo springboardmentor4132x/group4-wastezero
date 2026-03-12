@@ -1,84 +1,40 @@
-const Application = require("../models/Application");
+const Application = require('../models/Application');
 
-
-// Volunteer Apply
-exports.applyOpportunity = async (req, res) => {
-
+// VOLUNTEER APPLY
+exports.apply = async (req, res) => {
   try {
-
     const { opportunity_id } = req.body;
-    const volunteer_id = req.user.id;
-
-    const existing = await Application.findOne({
+    const app = new Application({
       opportunity_id,
-      volunteer_id
+      volunteer_id: req.user.id
     });
-
-    if (existing) {
-      return res.status(400).json({
-        message: "You already applied"
-      });
-    }
-
-    const application = new Application({
-      opportunity_id,
-      volunteer_id
-    });
-
-    await application.save();
-
-    res.status(201).json({
-      message: "Application submitted successfully",
-      application
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    await app.save();
+    res.status(201).json({ success: true, message: "Applied successfully!", data: app });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
 };
 
-
-
-// Admin View Applications
+// ADMIN GET ALL
 exports.getApplications = async (req, res) => {
-
   try {
-
-    const applications = await Application.find()
-      .populate("volunteer_id", "name email")
-      .populate("opportunity_id", "title location");
-
-    res.json(applications);
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const apps = await Application.find()
+      .populate('opportunity_id', 'title')
+      .populate('volunteer_id', 'name email')
+      .sort({ createdAt: -1 });
+    res.json({ success: true, data: apps });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
 };
 
-
-
-// Admin Accept / Reject
-exports.updateApplicationStatus = async (req, res) => {
-
+// UPDATE STATUS
+exports.updateStatus = async (req, res) => {
   try {
-
     const { status } = req.body;
-
-    const application = await Application.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
-
-    res.json({
-      message: "Application status updated",
-      application
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const app = await Application.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    res.json({ success: true, message: `Status set to ${status}`, data: app });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
-
 };

@@ -1,0 +1,76 @@
+<div class="admin-container">
+    <h2>Control Panel</h2>
+
+    <div style="display: flex; gap: 30px; margin-bottom: 40px;">
+        <div
+            style="flex: 1; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; border-left: 5px solid #2e7d32;">
+            <h4 style="margin: 0; color: #666; font-size: 0.9rem;">Total Active Users</h4>
+            <p style="margin: 5px 0 0 0; font-size: 2rem; font-weight: bold; color: #333;">{{ users.length }}</p>
+        </div>
+        <div
+            style="flex: 1; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; border-left: 5px solid #e65100;">
+            <h4 style="margin: 0; color: #666; font-size: 0.9rem;">Total Listed Pickups</h4>
+            <p style="margin: 5px 0 0 0; font-size: 2rem; font-weight: bold; color: #333;">{{ pickups.length }}</p>
+        </div>
+    </div>
+
+    <h3>System Users Management</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>System Role</th>
+                <th>User Location</th>
+                <th>Status / Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let u of users">
+                <td style="color: #888;">#{{ u.id }}</td>
+                <td>
+                    <strong>{{ u.name }}</strong>
+                    <div style="font-size: 0.8rem; color: #777; margin-top:2px;">{{ u.email }}</div>
+                </td>
+                <td><span class="badge" [ngClass]="u.role">{{ u.role }}</span></td>
+                <td>{{ u.location }}</td>
+                <td>
+                    <button class="btn-action" *ngIf="u.role !== 'admin'">Suspend</button>
+                    <button class="btn-action btn-delete" *ngIf="u.role !== 'admin'"
+                        (click)="deleteUser(u.id)">Delete</button>
+                    <span style="color: #ccc; font-style: italic; font-size: 0.9rem;" *ngIf="u.role === 'admin'">No
+                        actions</span>
+                </td>
+            </tr>
+            <tr *ngIf="users.length === 0">
+                <td colspan="5" style="text-align: center; color: #999; padding: 30px;">No users found in system.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Recent Pickups Masterlog</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Track ID</th>
+                <th>Requester</th>
+                <th>Waste Class</th>
+                <th>Date Logged</th>
+                <th>Current Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of pickups">
+                <td style="color: #1565c0; font-weight: bold;">{{ p.id }}</td>
+                <td>{{ p.user }}</td>
+                <td>{{ p.type }}</td>
+                <td>{{ p.date }}</td>
+                <td>
+                    <span [ngStyle]="{'color': p.status === 'Completed' ? 'green' : 'orange', 'font-weight': 'bold'}">
+                        {{ p.status }}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

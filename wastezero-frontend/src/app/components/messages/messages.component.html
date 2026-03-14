@@ -1,0 +1,38 @@
+<div style="max-width: 1000px; margin: 0 auto;">
+    <h2 style="color: var(--primary-dark);">Communications</h2>
+    <div class="messages-container">
+        <div class="chat-list">
+            <div class="list-header">Your Chats</div>
+            <div class="chat-item" *ngFor="let contact of contacts" [class.active]="contact.id === activeContactId"
+                (click)="activeContactId = contact.id">
+                <strong>{{ contact.name }}</strong>
+                <p style="margin:4px 0 0 0; font-size:0.85rem; color:#888;">{{ contact.lastMsg }}</p>
+            </div>
+        </div>
+
+        <div class="chat-window" *ngIf="activeContactId === 2">
+            <div class="chat-header">Volunteer #1042</div>
+            <div class="chat-messages">
+                <div class="msg received">Hello, I accepted your waste pickup request.</div>
+                <div class="msg sent">Great, thank you! I've placed the bags outside. Which vehicle are you in?</div>
+                <div class="msg received">I'm in a white pickup truck. I will be arriving in 10 mins.</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Type a message...">
+                <button>Send</button>
+            </div>
+        </div>
+
+        <div class="chat-window" *ngIf="activeContactId === 1">
+            <div class="chat-header">System Admin</div>
+            <div class="chat-messages">
+                <div class="msg received">🌿 Welcome to WasteZero! Your account is active.</div>
+                <div class="msg received">You can start scheduling pickups or managing your profile.</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Type a message..." disabled>
+                <button disabled style="background:#ccc;">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

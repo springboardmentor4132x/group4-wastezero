@@ -1,0 +1,38 @@
+<div class="profile-container">
+    <h2>Account Overview</h2>
+
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ user?.name ? (user.name.charAt(0) | uppercase) : 'U' }}
+        </div>
+        <div class="profile-title">
+            <h3>{{ user?.name || 'User Name' }}</h3>
+            <p>ID: {{ user?.id || 'Wait...' }}</p>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <label>Email Address</label>
+        <span>{{ user?.email || 'email@example.com' }}</span>
+    </div>
+
+    <div class="info-row">
+        <label>System Role</label>
+        <span
+            style="background: #e8f5e9; color: var(--primary-dark); padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; text-transform: capitalize;">
+            {{ user?.role || 'Guest' }}
+        </span>
+    </div>
+
+    <div class="info-row">
+        <label>Location</label>
+        <span>{{ user?.location || 'No location provided' }}</span>
+    </div>
+
+    <div style="margin-top: 35px; display: flex; gap: 15px;">
+        <button class="btn" style="width: auto; padding: 12px 25px;">Edit Profile</button>
+        <button class="btn"
+            style="width: auto; padding: 12px 25px; background: white; color: var(--error); border: 1px solid var(--error);">Delete
+            Account</button>
+    </div>
+</div>

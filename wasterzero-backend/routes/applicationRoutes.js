@@ -33,4 +33,13 @@ router.put(
   applicationController.updateApplicationStatus
 );
 
+// Volunteer: Get My Own Applications
+router.get(
+  "/my",
+  authMiddleware,
+  roleMiddleware("volunteer"),
+  applicationController.getMyApplications
+);
+
+
 module.exports = router;

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { Sidebar } from './shared/sidebar/sidebar';
 import { Navbar } from './shared/navbar/navbar';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +13,20 @@ import { Navbar } from './shared/navbar/navbar';
 })
 export class App {
 
-  constructor(public router: Router) {}
+  currentUrl = '';
 
-  // 🔥 Hide layout on Landing + Login + Register
+  constructor(public router: Router) {
+    // ✅ Track URL changes properly — fixes isAuthPage() on navigation
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentUrl = event.urlAfterRedirects;
+      });
+  }
+
   isAuthPage(): boolean {
     const publicRoutes = ['/', '/login', '/register'];
-    return publicRoutes.includes(this.router.url);
+    const url = this.currentUrl || this.router.url;
+    return publicRoutes.some(route => url === route);
   }
 }

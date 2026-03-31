@@ -1,1 +1,206 @@
-<p>schedule-pickup works!</p>
+<div class="min-h-screen bg-[#0a0f0a] px-8 py-10 relative overflow-hidden">
+
+  <!-- bg glow -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-72 bg-green-700/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="mb-10 relative z-10">
+    <span class="text-green-500 text-xs uppercase tracking-widest font-medium">Citizen Portal</span>
+    <h1 class="text-5xl font-extrabold text-green-50 tracking-tighter mt-1 leading-none">Schedule Pickup</h1>
+    <p class="text-green-700 text-sm mt-3">Fill in the details below to request a waste pickup.</p>
+  </div>
+
+  <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- FORM CARD -->
+    <div class="bg-white/[0.03] border border-green-900/30 rounded-2xl p-8">
+
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium mb-6">New Request</p>
+
+      <form [formGroup]="pickupForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+        <!-- Waste Type -->
+        <div>
+          <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+            Waste Type *
+          </label>
+          <select
+            formControlName="wasteType"
+            class="w-full px-4 py-3 bg-[#0a0f0a] border border-green-900/40 rounded-xl text-green-300 focus:outline-none focus:border-green-600 transition-all text-sm appearance-none cursor-pointer">
+            <option value="" class="bg-[#0a0f0a] text-green-700">Select waste type</option>
+            <option *ngFor="let type of wasteTypes" [value]="type" class="bg-[#0a0f0a] text-green-300">
+              {{ type }}
+            </option>
+          </select>
+          <p *ngIf="pickupForm.get('wasteType')?.touched && pickupForm.get('wasteType')?.invalid"
+             class="text-red-400 text-xs mt-1 pl-1">Waste type is required</p>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+            Description (optional)
+          </label>
+          <textarea
+            formControlName="description"
+            placeholder="Describe your waste (e.g. old bottles, broken electronics...)"
+            rows="3"
+            class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-100 placeholder-green-800 focus:outline-none focus:border-green-600 transition-all text-sm resize-none">
+          </textarea>
+        </div>
+
+        <!-- Quantity -->
+        <div>
+          <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+            Estimated Quantity / Weight *
+          </label>
+          <input
+            type="text"
+            formControlName="quantity"
+            placeholder="e.g. 5kg, 2 bags, 1 box"
+            class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-100 placeholder-green-800 focus:outline-none focus:border-green-600 transition-all text-sm"
+          />
+          <p *ngIf="pickupForm.get('quantity')?.touched && pickupForm.get('quantity')?.invalid"
+             class="text-red-400 text-xs mt-1 pl-1">Quantity is required</p>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+            Pickup Address *
+          </label>
+          <input
+            type="text"
+            formControlName="address"
+            placeholder="Enter full pickup address"
+            class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-100 placeholder-green-800 focus:outline-none focus:border-green-600 transition-all text-sm"
+          />
+          <p *ngIf="pickupForm.get('address')?.touched && pickupForm.get('address')?.invalid"
+             class="text-red-400 text-xs mt-1 pl-1">Address is required</p>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+              Preferred Date *
+            </label>
+            <input
+              type="date"
+              formControlName="preferredDate"
+              class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-300 focus:outline-none focus:border-green-600 transition-all text-sm"
+            />
+            <p *ngIf="pickupForm.get('preferredDate')?.touched && pickupForm.get('preferredDate')?.invalid"
+               class="text-red-400 text-xs mt-1 pl-1">Date is required</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+              Preferred Time *
+            </label>
+            <input
+              type="time"
+              formControlName="preferredTime"
+              class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-300 focus:outline-none focus:border-green-600 transition-all text-sm"
+            />
+            <p *ngIf="pickupForm.get('preferredTime')?.touched && pickupForm.get('preferredTime')?.invalid"
+               class="text-red-400 text-xs mt-1 pl-1">Time is required</p>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <label class="block text-xs font-medium text-green-500 uppercase tracking-widest mb-2">
+            Contact Number (optional)
+          </label>
+          <input
+            type="text"
+            formControlName="contactNumber"
+            placeholder="e.g. +91 98765 43210"
+            class="w-full px-4 py-3 bg-white/[0.04] border border-green-900/40 rounded-xl text-green-100 placeholder-green-800 focus:outline-none focus:border-green-600 transition-all text-sm"
+          />
+        </div>
+
+        <!-- Success -->
+        <div *ngIf="successMessage"
+             class="bg-green-900/20 border border-green-700/40 text-green-400 text-sm p-3 rounded-xl text-center">
+          ✅ {{ successMessage }}
+        </div>
+
+        <!-- Error -->
+        <div *ngIf="errorMessage"
+             class="bg-red-900/20 border border-red-800/40 text-red-400 text-sm p-3 rounded-xl text-center">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="w-full bg-green-700 text-green-50 py-3 rounded-xl font-semibold hover:bg-green-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-wide">
+          {{ isLoading ? 'Submitting...' : 'Submit Pickup Request' }}
+        </button>
+
+      </form>
+    </div>
+
+    <!-- MY PICKUPS LIST -->
+    <div>
+      <div class="flex items-center gap-3 mb-5">
+        <p class="text-green-500 text-xs uppercase tracking-widest font-medium">My Pickup Requests</p>
+        <div class="flex-1 h-px bg-green-900/20"></div>
+      </div>
+
+      <!-- Empty state -->
+      <div *ngIf="myPickups.length === 0"
+           class="bg-white/[0.02] border border-green-900/20 rounded-2xl p-10 text-center">
+        <div class="text-4xl mb-3">♻️</div>
+        <p class="text-green-600 text-sm">No pickup requests yet.</p>
+        <p class="text-green-800 text-xs mt-1">Submit your first request on the left!</p>
+      </div>
+
+      <!-- Pickup cards -->
+      <div class="space-y-4">
+        <div *ngFor="let pickup of myPickups"
+             class="bg-white/[0.03] border border-green-900/25 rounded-2xl p-5 hover:bg-green-900/10 transition-all">
+
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-900/40 rounded-xl flex items-center justify-center text-lg">
+                {{ pickup.wasteType === 'Plastic' ? '🧴' :
+                   pickup.wasteType === 'Organic' ? '🌿' :
+                   pickup.wasteType === 'E-Waste' ? '💻' :
+                   pickup.wasteType === 'Metal' ? '🔩' :
+                   pickup.wasteType === 'Glass' ? '🫙' : '🗑️' }}
+              </div>
+              <div>
+                <p class="text-green-200 text-sm font-semibold">{{ pickup.wasteType }}</p>
+                <p class="text-green-700 text-xs">{{ pickup.quantity }}</p>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium border"
+                  [ngClass]="{
+                    'bg-yellow-900/20 text-yellow-400 border-yellow-900/30': pickup.status === 'Open',
+                    'bg-teal-900/20 text-teal-400 border-teal-900/30': pickup.status === 'Accepted',
+                    'bg-green-900/20 text-green-400 border-green-900/30': pickup.status === 'Completed',
+                    'bg-red-900/20 text-red-400 border-red-900/30': pickup.status === 'Cancelled'
+                  }">
+              {{ pickup.status }}
+            </span>
+          </div>
+
+          <div class="space-y-1.5 text-xs text-green-700">
+            <p>📍 {{ pickup.address }}</p>
+            <p>📅 {{ pickup.preferredDate }} at {{ pickup.preferredTime }}</p>
+            <p *ngIf="pickup.volunteer_id">
+              🙋 Volunteer: <span class="text-green-500">{{ pickup.volunteer_id.name }}</span>
+            </p>
+            <p *ngIf="pickup.description" class="text-green-800 italic">{{ pickup.description }}</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -22,23 +22,20 @@ export class Login {
     private router: Router,
     private authService: AuthService
   ) {
-
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
 
-    // 🔥 Auto redirect if already logged in
+    // Auto redirect if already logged in
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
-
     if (token && role) {
       this.redirectByRole(role);
     }
   }
 
   onSubmit(): void {
-
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -47,40 +44,37 @@ export class Login {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value)
-      .subscribe({
-        next: (res: any) => {
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (res: any) => {
+        this.isLoading = false;
 
-          this.isLoading = false;
+        // Store all user data
+        localStorage.setItem('token',     res.token);
+        localStorage.setItem('role',      res.role);
+        localStorage.setItem('name',      res.name);
+        localStorage.setItem('userId',    res._id);
+        localStorage.setItem('email',     res.email || '');
+        localStorage.setItem('location',  res.location || '');
+        localStorage.setItem('skills',    JSON.stringify(res.skills || []));
+        localStorage.setItem('interests', JSON.stringify(res.interests || []));
 
-          // ✅ Store token & user data
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('role', res.role);
-          localStorage.setItem('name', res.name);
-
-          // ✅ Redirect based on role
-          this.redirectByRole(res.role);
-        },
-
-        error: (err) => {
-          this.isLoading = false;
-          this.errorMessage = err?.error?.message || 'Login failed. Please try again.';
-        }
-      });
+        this.redirectByRole(res.role);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err?.error?.message || 'Login failed. Please try again.';
+      }
+    });
   }
 
   private redirectByRole(role: string): void {
-
     if (role === 'user') {
       this.router.navigate(['/dashboard-user']);
-    }
-    else if (role === 'volunteer') {
+    } else if (role === 'volunteer') {
       this.router.navigate(['/dashboard-volunteer']);
-    }
-    else if (role === 'admin') {
+    } else if (role === 'admin') {
       this.router.navigate(['/dashboard-admin']);
-    }
-    else {
+    } else {
       this.router.navigate(['/login']);
     }
   }

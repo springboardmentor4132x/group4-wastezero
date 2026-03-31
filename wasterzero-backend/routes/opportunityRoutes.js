@@ -3,10 +3,11 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
-
 const opportunityController = require("../controllers/opportunityController");
 
-// Create opportunity (Admin only)
+// ─── IMPORTANT: Specific routes MUST come before /:id routes ───
+
+// Admin: Create opportunity
 router.post(
   "/",
   authMiddleware,
@@ -14,15 +15,38 @@ router.post(
   opportunityController.createOpportunity
 );
 
-// Get opportunities (Volunteer view)
+// Volunteer: Get matched opportunities  ← must be before GET /
+router.get(
+  "/matched",
+  authMiddleware,
+  roleMiddleware("volunteer"),
+  opportunityController.getMatchedOpportunities
+);
+
+// Admin: Get ALL opportunities (including closed)  ← must be before GET /
+router.get(
+  "/all",
+  authMiddleware,
+  roleMiddleware("admin"),
+  opportunityController.getAllOpportunities
+);
+
+// Volunteer + Admin: Get open opportunities
 router.get(
   "/",
   authMiddleware,
   opportunityController.getOpportunities
 );
 
-module.exports = router;
+// Admin: Update opportunity
+router.put(
+  "/:id",
+  authMiddleware,
+  roleMiddleware("admin"),
+  opportunityController.updateOpportunity
+);
 
+// Admin: Delete opportunity (soft delete)
 router.delete(
   "/:id",
   authMiddleware,
@@ -30,9 +54,5 @@ router.delete(
   opportunityController.deleteOpportunity
 );
 
-router.put(
-  "/:id",
-  authMiddleware,
-  roleMiddleware("admin"),
-  opportunityController.updateOpportunity
-);
+// ─── module.exports MUST always be at the bottom ───
+module.exports = router;

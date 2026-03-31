@@ -12,7 +12,6 @@ export class OpportunityService {
 
   getHeaders() {
     const token = localStorage.getItem('token');
-
     return {
       headers: new HttpHeaders({
         Authorization: `Bearer ${token}`
@@ -25,22 +24,32 @@ export class OpportunityService {
     return this.http.post(`${this.apiUrl}/opportunities`, data, this.getHeaders());
   }
 
-  // Get Opportunities
+  // Get open Opportunities (Volunteer view)
   getOpportunities() {
     return this.http.get(`${this.apiUrl}/opportunities`, this.getHeaders());
   }
 
-  // Update Opportunity
+  // Get ALL Opportunities (Admin view)
+  getAllOpportunities() {
+    return this.http.get(`${this.apiUrl}/opportunities/all`, this.getHeaders());
+  }
+
+  // Get MATCHED Opportunities (Volunteer — based on skills + location)
+  getMatchedOpportunities() {
+    return this.http.get(`${this.apiUrl}/opportunities/matched`, this.getHeaders());
+  }
+
+  // Update Opportunity (Admin)
   updateOpportunity(id: string, data: any) {
     return this.http.put(`${this.apiUrl}/opportunities/${id}`, data, this.getHeaders());
   }
 
-  // Delete Opportunity
+  // Delete Opportunity (Admin)
   deleteOpportunity(id: string) {
     return this.http.delete(`${this.apiUrl}/opportunities/${id}`, this.getHeaders());
   }
 
-  // Apply Opportunity (Volunteer)
+  // Apply to Opportunity (Volunteer)
   applyOpportunity(opportunity_id: string) {
     return this.http.post(
       `${this.apiUrl}/applications/apply`,
@@ -49,12 +58,12 @@ export class OpportunityService {
     );
   }
 
-  // Get Applications (Admin)
+  // Get All Applications (Admin)
   getApplications() {
     return this.http.get(`${this.apiUrl}/applications`, this.getHeaders());
   }
 
-  // Accept / Reject Application
+  // Accept / Reject Application (Admin)
   updateApplicationStatus(id: string, status: string) {
     return this.http.put(
       `${this.apiUrl}/applications/${id}`,
@@ -63,4 +72,8 @@ export class OpportunityService {
     );
   }
 
+  // Get My Applications (Volunteer)
+  getMyApplications() {
+    return this.http.get(`${this.apiUrl}/applications/my`, this.getHeaders());
+  }
 }

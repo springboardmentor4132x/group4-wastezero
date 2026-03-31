@@ -1,28 +1,97 @@
-<div class="bg-white/60 backdrop-blur-md shadow-md px-6 py-4 flex justify-between items-center border-b">
+<div class="bg-[#0a0f0a]/95 backdrop-blur-md border-b border-green-900/20 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
 
-  <h1 class="text-xl font-semibold text-gray-700 tracking-wide">
-    🌱 WasteZero
-  </h1>
+  <!-- Left: Logo -->
+  <div class="flex items-center gap-2">
+    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+    <span class="text-lg font-bold text-green-300 tracking-tight">WasteZero</span>
+  </div>
 
-  <div class="flex items-center gap-4">
+  <!-- Right: Actions -->
+  <div class="flex items-center gap-3">
 
-    <!-- Dark Mode Toggle -->
-    <button (click)="toggleDarkMode()"
-            class="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition">
-      🌙
-    </button>
+    <!-- Notifications Bell -->
+    <div class="relative">
+      <button
+        (click)="toggleNotifications($event)"
+        class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/[0.04] border border-green-900/30 text-green-600 hover:bg-green-900/20 hover:text-green-300 transition-all text-base">
+        🔔
+      </button>
 
-    <!-- User Name -->
-    <span class="text-gray-600 font-medium">
-      {{ role | titlecase }}
-    </span>
+      <!-- Unread badge -->
+      <span *ngIf="unreadCount > 0"
+            class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center font-bold leading-none">
+        {{ unreadCount > 9 ? '9+' : unreadCount }}
+      </span>
+
+      <!-- Dropdown panel -->
+      <div *ngIf="showNotifications"
+           class="absolute right-0 top-12 w-80 bg-[#0d1a0d] border border-green-900/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+
+        <!-- Dropdown header -->
+        <div class="flex items-center justify-between px-4 py-3 border-b border-green-900/20">
+          <p class="text-green-300 text-sm font-semibold">Notifications</p>
+          <button
+            (click)="markAllRead()"
+            class="text-green-600 text-xs hover:text-green-400 transition-all">
+            Mark all read
+          </button>
+        </div>
+
+        <!-- Notification list -->
+        <div class="max-h-80 overflow-y-auto">
+
+          <div *ngIf="notifications.length === 0" class="px-4 py-8 text-center">
+            <div class="text-3xl mb-2">🔔</div>
+            <p class="text-green-800 text-sm">No notifications yet</p>
+          </div>
+
+          <div *ngFor="let notif of notifications"
+               (click)="markOneRead(notif._id)"
+               class="flex items-start gap-3 px-4 py-3 border-b border-green-900/10 cursor-pointer hover:bg-green-900/10 transition-all"
+               [ngClass]="!notif.isRead ? 'bg-green-900/[0.08]' : ''">
+
+            <span class="text-lg mt-0.5 flex-shrink-0">
+              {{ notif.type === 'application_accepted' ? '🎉' :
+                 notif.type === 'application_rejected' ? '❌' :
+                 notif.type === 'new_message'          ? '💬' :
+                 notif.type === 'pickup_accepted'      ? '🚛' :
+                 notif.type === 'pickup_completed'     ? '♻️' :
+                 notif.type === 'new_opportunity'      ? '🌿' : '🔔' }}
+            </span>
+
+            <div class="flex-1 min-w-0">
+              <p class="text-green-200 text-xs font-medium leading-snug">{{ notif.title }}</p>
+              <p class="text-green-700 text-xs mt-0.5 leading-relaxed">{{ notif.message }}</p>
+            </div>
+
+            <!-- Unread dot -->
+            <span *ngIf="!notif.isRead"
+                  class="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0 mt-1.5">
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Role + Name Badge -->
+    <div class="flex items-center gap-2 px-4 py-2 bg-white/[0.03] border border-green-900/25 rounded-xl">
+      <span class="w-1.5 h-1.5 rounded-full"
+            [ngClass]="getRoleColor()">
+      </span>
+      <span class="text-green-400 text-sm font-medium">
+        {{ userName || (role | titlecase) }}
+      </span>
+    </div>
 
     <!-- Logout -->
-    <button (click)="logout()"
-            class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition shadow-md">
+    <button
+      (click)="logout()"
+      class="px-4 py-2 bg-red-900/30 border border-red-900/40 text-red-400 text-sm font-medium rounded-xl hover:bg-red-900/50 hover:text-red-300 transition-all">
       Logout
     </button>
 
   </div>
-
 </div>

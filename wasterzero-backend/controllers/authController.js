@@ -22,7 +22,9 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      location
+      location,
+      skills: [],
+      interests: []
     });
 
     await newUser.save();
@@ -58,9 +60,54 @@ exports.login = async (req, res) => {
     res.json({
       token,
       role: user.role,
-      name: user.name
+      name: user.name,
+      _id: user._id,        // ← ADDED — needed for messaging & notifications
+      email: user.email,    // ← ADDED — needed for profile page
+      location: user.location || "",
+      skills: user.skills || [],
+      interests: user.interests || []
     });
 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GET PROFILE
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// UPDATE PROFILE
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, location, phone, bio, skills, interests } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        name,
+        location,
+        phone,
+        bio,
+        skills: Array.isArray(skills) ? skills : skills?.split(",").map((s) => s.trim()).filter(Boolean) || [],
+        interests: Array.isArray(interests) ? interests : interests?.split(",").map((s) => s.trim()).filter(Boolean) || []
+      },
+      { new: true }
+    ).select("-password");
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

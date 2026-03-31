@@ -1,71 +1,99 @@
-<div class="p-8 bg-gray-100 min-h-screen">
+<div class="min-h-screen bg-[#0a0f0a] px-8 py-10 relative overflow-hidden">
 
-<h1 class="text-3xl font-bold text-green-600 mb-6">
-Volunteer Applications
-</h1>
+  <!-- bg glow -->
+  <div class="absolute top-0 left-0 w-96 h-96 bg-yellow-700/[0.06] rounded-full blur-3xl pointer-events-none"></div>
 
-<table class="w-full bg-white shadow rounded-lg">
+  <!-- Header -->
+  <div class="mb-10 relative z-10 flex items-start justify-between flex-wrap gap-4">
+    <div>
+      <span class="text-yellow-500 text-xs uppercase tracking-widest font-medium">Admin Panel</span>
+      <h1 class="text-5xl font-extrabold text-green-50 tracking-tighter mt-1 leading-none">Applications</h1>
+      <p class="text-green-700 text-sm mt-3">Review and manage volunteer applications.</p>
+    </div>
+    <a routerLink="/admin"
+       class="flex items-center gap-2 px-5 py-3 bg-white/[0.03] border border-green-900/30 text-green-400 text-sm font-medium rounded-xl hover:bg-green-900/20 transition-all">
+      ← Back to Panel
+    </a>
+  </div>
 
-<thead class="bg-green-600 text-white">
+  <!-- Stats row -->
+  <div class="grid grid-cols-3 gap-4 mb-8 relative z-10">
+    <div class="bg-white/[0.03] border border-yellow-900/20 rounded-xl p-4 text-center">
+      <p class="text-3xl font-extrabold text-yellow-400">{{ applications.length }}</p>
+      <p class="text-yellow-700 text-xs uppercase tracking-widest mt-1">Total</p>
+    </div>
+    <div class="bg-white/[0.03] border border-green-900/20 rounded-xl p-4 text-center">
+      <p class="text-3xl font-extrabold text-green-400">{{ getCount('accepted') }}</p>
+      <p class="text-green-700 text-xs uppercase tracking-widest mt-1">Accepted</p>
+    </div>
+    <div class="bg-white/[0.03] border border-red-900/20 rounded-xl p-4 text-center">
+      <p class="text-3xl font-extrabold text-red-400">{{ getCount('rejected') }}</p>
+      <p class="text-red-700 text-xs uppercase tracking-widest mt-1">Rejected</p>
+    </div>
+  </div>
 
-<tr>
+  <!-- Table -->
+  <div class="relative z-10 bg-white/[0.02] border border-green-900/20 rounded-2xl overflow-hidden">
 
-<th class="p-3 text-left">Volunteer</th>
-<th class="p-3 text-left">Opportunity</th>
-<th class="p-3 text-left">Location</th>
-<th class="p-3 text-left">Status</th>
-<th class="p-3 text-left">Action</th>
+    <!-- Table Header -->
+    <div class="grid grid-cols-5 gap-4 px-6 py-3 bg-green-900/10 border-b border-green-900/20">
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium">Volunteer</p>
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium col-span-2">Opportunity</p>
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium">Status</p>
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium">Actions</p>
+    </div>
 
-</tr>
+    <!-- Empty -->
+    <div *ngIf="applications.length === 0" class="p-16 text-center">
+      <div class="text-4xl mb-3">📭</div>
+      <p class="text-green-600 text-sm">No applications yet.</p>
+    </div>
 
-</thead>
+    <!-- Rows -->
+    <div *ngFor="let app of applications"
+         class="grid grid-cols-5 gap-4 px-6 py-4 border-b border-green-900/10 hover:bg-green-900/[0.07] transition-all items-center">
 
-<tbody>
+      <!-- Volunteer -->
+      <div>
+        <p class="text-green-200 text-sm font-medium">{{ app.volunteer_id?.name }}</p>
+        <p class="text-green-700 text-xs mt-0.5">{{ app.volunteer_id?.email }}</p>
+      </div>
 
-<tr *ngFor="let app of applications" class="border-b">
+      <!-- Opportunity -->
+      <div class="col-span-2">
+        <p class="text-green-300 text-sm font-medium">{{ app.opportunity_id?.title }}</p>
+        <p class="text-green-700 text-xs mt-0.5">📍 {{ app.opportunity_id?.location }}</p>
+      </div>
 
-<td class="p-3">
-{{ app.volunteer_id?.name }}
-</td>
+      <!-- Status -->
+      <div>
+        <span class="px-3 py-1 rounded-full text-xs font-medium border"
+              [ngClass]="{
+                'bg-yellow-900/20 text-yellow-400 border-yellow-900/30': app.status === 'pending',
+                'bg-green-900/20 text-green-400 border-green-900/30': app.status === 'accepted',
+                'bg-red-900/20 text-red-400 border-red-900/30': app.status === 'rejected'
+              }">
+          {{ app.status | titlecase }}
+        </span>
+      </div>
 
-<td class="p-3">
-{{ app.opportunity_id?.title }}
-</td>
+      <!-- Actions -->
+      <div class="flex gap-2" *ngIf="app.status === 'pending'">
+        <button
+          (click)="updateStatus(app._id, 'accepted')"
+          class="flex-1 py-1.5 bg-green-900/20 border border-green-900/30 text-green-400 text-xs font-medium rounded-lg hover:bg-green-900/40 transition-all">
+          ✓ Accept
+        </button>
+        <button
+          (click)="updateStatus(app._id, 'rejected')"
+          class="flex-1 py-1.5 bg-red-900/20 border border-red-900/30 text-red-400 text-xs font-medium rounded-lg hover:bg-red-900/40 transition-all">
+          ✗ Reject
+        </button>
+      </div>
+      <div *ngIf="app.status !== 'pending'" class="text-green-800 text-xs">
+        No actions
+      </div>
 
-<td class="p-3">
-{{ app.opportunity_id?.location }}
-</td>
-
-<td class="p-3">
-<span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded">
-{{ app.status }}
-</span>
-</td>
-
-<td class="p-3 space-x-2">
-
-<button
-(click)="updateStatus(app._id,'accepted')"
-class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
-
-Accept
-
-</button>
-
-<button
-(click)="updateStatus(app._id,'rejected')"
-class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-
-Reject
-
-</button>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
+    </div>
+  </div>
 </div>

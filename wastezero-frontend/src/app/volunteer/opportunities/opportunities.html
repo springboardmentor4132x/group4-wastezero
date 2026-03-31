@@ -1,44 +1,287 @@
-<div class="p-8 bg-gray-100 min-h-screen">
+<div class="min-h-screen bg-[#0a0f0a] px-8 py-10 relative overflow-hidden">
 
-<h1 class="text-3xl font-bold text-green-600 mb-8">
-Available Opportunities
-</h1>
+  <!-- bg glow -->
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-700/[0.07] rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 bg-green-700/[0.05] rounded-full blur-3xl pointer-events-none"></div>
 
-<div class="grid md:grid-cols-2 gap-6">
+  <!-- Header -->
+  <div class="mb-8 relative z-10 flex items-start justify-between flex-wrap gap-4">
+    <div>
+      <span class="text-teal-500 text-xs uppercase tracking-widest font-medium">Volunteer Portal</span>
+      <h1 class="text-5xl font-extrabold text-green-50 tracking-tighter mt-1 leading-none">Opportunities</h1>
+      <p class="text-green-700 text-sm mt-3">Pickup requests from citizens and opportunities posted by admin.</p>
+    </div>
+    <div class="flex items-center gap-2 bg-white/[0.03] border border-teal-900/30 rounded-2xl px-5 py-3">
+      <span class="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></span>
+      <span class="text-teal-400 text-sm font-medium">{{ openPickups.length + adminOpportunities.length }} Available</span>
+    </div>
+  </div>
 
-<div *ngFor="let opp of opportunities"
-class="bg-white shadow rounded-xl p-6">
+  <!-- TABS -->
+  <div class="relative z-10 flex gap-3 mb-8 flex-wrap">
 
-<h2 class="text-xl font-semibold text-gray-800">
-{{ opp.title }}
-</h2>
+    <button
+      (click)="switchTab('pickups')"
+      class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all"
+      [ngClass]="activeTab === 'pickups'
+        ? 'bg-teal-700 text-green-50 border-teal-700'
+        : 'bg-white/[0.03] text-green-600 border-teal-900/30 hover:bg-teal-900/20 hover:text-teal-300'">
+      <span>🚛</span>
+      Pickup Requests
+      <span class="px-1.5 py-0.5 rounded-full text-xs"
+            [ngClass]="activeTab === 'pickups' ? 'bg-teal-600 text-green-100' : 'bg-teal-900/40 text-teal-500'">
+        {{ openPickups.length }}
+      </span>
+    </button>
 
-<p class="text-gray-600 mt-2">
-{{ opp.description }}
-</p>
+    <button
+      (click)="switchTab('opportunities')"
+      class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all"
+      [ngClass]="activeTab === 'opportunities'
+        ? 'bg-green-700 text-green-50 border-green-700'
+        : 'bg-white/[0.03] text-green-600 border-green-900/30 hover:bg-green-900/20 hover:text-green-300'">
+      <span>📋</span>
+      Admin Opportunities
+      <span class="px-1.5 py-0.5 rounded-full text-xs"
+            [ngClass]="activeTab === 'opportunities' ? 'bg-green-600 text-green-100' : 'bg-green-900/40 text-green-600'">
+        {{ adminOpportunities.length }}
+      </span>
+    </button>
 
-<p class="text-sm text-gray-500 mt-3">
-Location: {{ opp.location }}
-</p>
+    <button
+      (click)="switchTab('assignments')"
+      class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all"
+      [ngClass]="activeTab === 'assignments'
+        ? 'bg-yellow-700/80 text-green-50 border-yellow-700/80'
+        : 'bg-white/[0.03] text-green-600 border-yellow-900/30 hover:bg-yellow-900/20 hover:text-yellow-300'">
+      <span>📦</span>
+      My Assignments
+      <span class="px-1.5 py-0.5 rounded-full text-xs"
+            [ngClass]="activeTab === 'assignments' ? 'bg-yellow-600/80 text-green-100' : 'bg-yellow-900/30 text-yellow-700'">
+        {{ acceptedPickups.length }}
+      </span>
+    </button>
 
-<p class="text-sm text-gray-500">
-Duration: {{ opp.duration }}
-</p>
+  </div>
 
-<p class="text-sm text-gray-500">
-Skills: {{ opp.requiredSkills }}
-</p>
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 1: PICKUP REQUESTS (Milestone 3)       -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeTab === 'pickups'" class="relative z-10">
 
-<button
-(click)="apply(opp._id)"
-class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    <div class="flex items-center gap-3 mb-5">
+      <p class="text-teal-500 text-xs uppercase tracking-widest font-medium">Open Pickup Requests from Citizens</p>
+      <div class="flex-1 h-px bg-teal-900/20"></div>
+    </div>
 
-Apply
+    <!-- Empty -->
+    <div *ngIf="openPickups.length === 0"
+         class="bg-white/[0.02] border border-teal-900/20 rounded-2xl p-16 text-center">
+      <div class="text-4xl mb-3">📭</div>
+      <p class="text-green-600 text-sm">No open pickup requests right now.</p>
+      <p class="text-green-800 text-xs mt-1">Check back soon!</p>
+    </div>
 
-</button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div *ngFor="let pickup of openPickups"
+           class="group bg-white/[0.03] border border-teal-900/25 rounded-2xl p-6 hover:bg-teal-900/10 hover:border-teal-700/35 hover:-translate-y-1 transition-all duration-300">
 
-</div>
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-teal-900/40 rounded-xl flex items-center justify-center text-xl group-hover:bg-teal-800/50 transition-all">
+              {{ getWasteIcon(pickup.wasteType) }}
+            </div>
+            <div>
+              <p class="text-green-200 text-base font-semibold">{{ pickup.wasteType }}</p>
+              <p class="text-green-700 text-xs">{{ pickup.quantity }}</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-yellow-900/20 text-yellow-400 text-xs font-medium border border-yellow-900/30">
+            Open
+          </span>
+        </div>
 
-</div>
+        <div class="space-y-2 mb-5">
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>📍</span><span>{{ pickup.address }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>📅</span><span>{{ pickup.preferredDate }} at {{ pickup.preferredTime }}</span>
+          </div>
+          <div *ngIf="pickup.user_id" class="flex items-center gap-2 text-xs text-green-700">
+            <span>👤</span><span>{{ pickup.user_id.name }}</span>
+          </div>
+          <div *ngIf="pickup.contactNumber" class="flex items-center gap-2 text-xs text-green-700">
+            <span>📞</span><span>{{ pickup.contactNumber }}</span>
+          </div>
+          <div *ngIf="pickup.description" class="flex items-center gap-2 text-xs text-green-800 italic">
+            <span>💬</span><span>{{ pickup.description }}</span>
+          </div>
+        </div>
+
+        <button
+          (click)="acceptPickup(pickup._id)"
+          class="w-full py-2.5 bg-teal-700/80 text-green-50 rounded-xl text-sm font-semibold hover:bg-teal-600 transition-all duration-300">
+          Accept Pickup →
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 2: ADMIN OPPORTUNITIES (Milestone 2)  -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeTab === 'opportunities'" class="relative z-10">
+
+    <div class="flex items-center gap-3 mb-5">
+      <p class="text-green-500 text-xs uppercase tracking-widest font-medium">Volunteering Opportunities Posted by Admin</p>
+      <div class="flex-1 h-px bg-green-900/20"></div>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="adminOpportunities.length === 0"
+         class="bg-white/[0.02] border border-green-900/20 rounded-2xl p-16 text-center">
+      <div class="text-4xl mb-3">📋</div>
+      <p class="text-green-600 text-sm">No opportunities posted yet.</p>
+      <p class="text-green-800 text-xs mt-1">Admin will post opportunities soon!</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div *ngFor="let opp of adminOpportunities"
+           class="group bg-white/[0.03] border border-green-900/25 rounded-2xl p-6 hover:bg-green-900/10 hover:border-green-700/35 hover:-translate-y-1 transition-all duration-300">
+
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-green-900/40 rounded-xl flex items-center justify-center text-xl group-hover:bg-green-800/50 transition-all">
+              🌿
+            </div>
+            <div>
+              <p class="text-green-200 text-base font-semibold">{{ opp.title }}</p>
+              <p class="text-green-700 text-xs">{{ opp.duration }}</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full text-xs font-medium border"
+                [ngClass]="{
+                  'bg-green-900/20 text-green-400 border-green-900/30': opp.status === 'open',
+                  'bg-yellow-900/20 text-yellow-400 border-yellow-900/30': opp.status === 'in-progress',
+                  'bg-red-900/20 text-red-400 border-red-900/30': opp.status === 'closed'
+                }">
+            {{ opp.status | titlecase }}
+          </span>
+        </div>
+
+        <p class="text-green-600 text-xs leading-relaxed mb-4">{{ opp.description }}</p>
+
+        <div class="space-y-2 mb-5">
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>📍</span><span>{{ opp.location }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>⏱️</span><span>{{ opp.duration }}</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span *ngFor="let skill of opp.requiredSkills"
+                  class="px-2.5 py-0.5 bg-green-900/30 text-green-500 text-xs rounded-full border border-green-900/30">
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Already Applied -->
+        <div *ngIf="hasApplied(opp._id)"
+             class="w-full py-2.5 bg-green-900/20 text-green-500 rounded-xl text-sm font-medium text-center border border-green-900/30">
+          ✅ Already Applied
+        </div>
+
+        <!-- Apply Button -->
+        <button
+          *ngIf="!hasApplied(opp._id) && opp.status === 'open'"
+          (click)="applyOpportunity(opp._id)"
+          class="w-full py-2.5 bg-green-700 text-green-50 rounded-xl text-sm font-semibold hover:bg-green-600 transition-all duration-300">
+          Apply Now →
+        </button>
+
+        <!-- Closed -->
+        <div *ngIf="opp.status !== 'open' && !hasApplied(opp._id)"
+             class="w-full py-2.5 bg-red-900/20 text-red-400 rounded-xl text-sm font-medium text-center border border-red-900/30">
+          🔒 Closed
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 3: MY ASSIGNMENTS                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeTab === 'assignments'" class="relative z-10">
+
+    <div class="flex items-center gap-3 mb-5">
+      <p class="text-yellow-500 text-xs uppercase tracking-widest font-medium">My Accepted Pickup Assignments</p>
+      <div class="flex-1 h-px bg-yellow-900/20"></div>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="acceptedPickups.length === 0"
+         class="bg-white/[0.02] border border-yellow-900/20 rounded-2xl p-16 text-center">
+      <div class="text-4xl mb-3">📦</div>
+      <p class="text-green-600 text-sm">No assignments yet.</p>
+      <p class="text-green-800 text-xs mt-1">Accept a pickup from the Pickup Requests tab!</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div *ngFor="let pickup of acceptedPickups"
+           class="group bg-white/[0.03] border border-yellow-900/20 rounded-2xl p-6 hover:bg-yellow-900/[0.07] transition-all duration-300">
+
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-yellow-900/30 rounded-xl flex items-center justify-center text-xl">
+              {{ getWasteIcon(pickup.wasteType) }}
+            </div>
+            <div>
+              <p class="text-green-200 text-base font-semibold">{{ pickup.wasteType }}</p>
+              <p class="text-green-700 text-xs">{{ pickup.quantity }}</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full text-xs font-medium border"
+                [ngClass]="{
+                  'bg-teal-900/20 text-teal-400 border-teal-900/30': pickup.status === 'Accepted',
+                  'bg-green-900/20 text-green-400 border-green-900/30': pickup.status === 'Completed'
+                }">
+            {{ pickup.status }}
+          </span>
+        </div>
+
+        <div class="space-y-2 mb-5">
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>📍</span><span>{{ pickup.address }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-green-700">
+            <span>📅</span><span>{{ pickup.preferredDate }} at {{ pickup.preferredTime }}</span>
+          </div>
+          <div *ngIf="pickup.user_id" class="flex items-center gap-2 text-xs text-green-700">
+            <span>👤</span><span>{{ pickup.user_id.name }} — {{ pickup.user_id.email }}</span>
+          </div>
+          <div *ngIf="pickup.contactNumber" class="flex items-center gap-2 text-xs text-green-700">
+            <span>📞</span><span>{{ pickup.contactNumber }}</span>
+          </div>
+        </div>
+
+        <button
+          *ngIf="pickup.status === 'Accepted'"
+          (click)="completePickup(pickup._id)"
+          class="w-full py-2.5 bg-green-700 text-green-50 rounded-xl text-sm font-semibold hover:bg-green-600 transition-all duration-300">
+          Mark as Completed ✅
+        </button>
+
+        <div *ngIf="pickup.status === 'Completed'"
+             class="w-full py-2.5 bg-green-900/20 text-green-500 rounded-xl text-sm font-medium text-center border border-green-900/30">
+          ✅ Completed
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>

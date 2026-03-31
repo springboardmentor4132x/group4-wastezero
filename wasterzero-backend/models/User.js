@@ -20,7 +20,24 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   location: {
-    type: String
+    type: String,
+    default: ""
+  },
+  skills: {
+    type: [String],
+    default: []
+  },
+  interests: {
+    type: [String],
+    default: []
+  },
+  phone: {
+    type: String,
+    default: ""
+  },
+  bio: {
+    type: String,
+    default: ""
   },
   created_at: {
     type: Date,

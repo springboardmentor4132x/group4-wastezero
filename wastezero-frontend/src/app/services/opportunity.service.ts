@@ -19,6 +19,10 @@ export class OpportunityService {
     return this.http.get(`${this.apiUrl}/opportunities`);
   }
 
+  getRecommendedOpportunities() {
+    return this.http.get(`${this.apiUrl}/opportunities/recommended`);
+  }
+
   updateOpportunity(id: string, data: any) {
     return this.http.put(`${this.apiUrl}/opportunities/${id}`, data);
   }

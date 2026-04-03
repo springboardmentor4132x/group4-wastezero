@@ -16,6 +16,7 @@ export class Login {
   loginForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +50,6 @@ export class Login {
       .subscribe({
         next: (res: any) => {
           console.log("✅ Server Response:", res);
-          this.isLoading = false;
 
           if (res && res.success === true) {
             // Securely store registry identity
@@ -58,10 +58,22 @@ export class Login {
             localStorage.setItem('name', res.name);
             localStorage.setItem('userId', res.userId);
 
-            console.log("🗺️ Identity established. Redirecting to role-based dashboard...");
-            this.redirectByRole(res.role);
+            this.successMessage = "Signature Verified. Establishing Session...";
+            
+            this.redirectByRole(res.role).then(success => {
+                if (!success) {
+                    console.error("❌ Navigation failed.");
+                    this.isLoading = false;
+                    this.errorMessage = "Security redirect failed. Contact system administrator.";
+                }
+            }).catch(err => {
+                console.error("🔥 Navigation crash:", err);
+                this.isLoading = false;
+                this.errorMessage = "Identity established but dashboard failed to load.";
+            });
           } else {
             console.warn("⚠️ Authentication fault:", res.message);
+            this.isLoading = false;
             this.errorMessage = res.message || 'Invalid credentials or system fault.';
           }
         },
@@ -73,10 +85,10 @@ export class Login {
       });
   }
 
-  private redirectByRole(role: string): void {
-    if (role === 'user') this.router.navigate(['/dashboard-user']);
-    else if (role === 'volunteer') this.router.navigate(['/dashboard-volunteer']);
-    else if (role === 'admin') this.router.navigate(['/dashboard-admin']);
-    else this.router.navigate(['/login']);
+  private redirectByRole(role: string): Promise<boolean> {
+    if (role === 'user') return this.router.navigate(['/dashboard-user']);
+    else if (role === 'volunteer') return this.router.navigate(['/dashboard-volunteer']);
+    else if (role === 'admin') return this.router.navigate(['/dashboard-admin']);
+    else return this.router.navigate(['/login']);
   }
 }

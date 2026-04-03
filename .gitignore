@@ -1,3 +1,7 @@
 node_modules/
 .env
 wasterzero-backend/.env
+**/dist/
+*.log
+.angular/
+

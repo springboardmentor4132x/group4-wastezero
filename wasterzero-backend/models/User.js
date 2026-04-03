@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
   location: {
     type: String
   },
+  skills: {
+    type: [String],
+    default: []
+  },
   created_at: {
     type: Date,
     default: Date.now

@@ -9,75 +9,126 @@
         WasteZero Citizen Dashboard
       </p>
     </div>
-    <button routerLink="/schedule-pickup"
-      class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 hover:shadow-2xl transition hover:-translate-y-1">
-      ♻️ Schedule Pickup
-    </button>
-  </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      
+      <!-- Right Side: Open Request Form -->
+      <div class="lg:col-span-2 space-y-12">
+        
+        <div class="bg-white rounded-[3rem] shadow-2xl p-12 border border-blue-50 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-48 h-48 bg-blue-50/50 rounded-full -mr-24 -mt-24"></div>
+          
+          <div class="relative z-10 mb-10">
+            <h3 class="text-3xl font-black text-gray-900 tracking-tighter uppercase italic">Initialize Recovery Protocol</h3>
+            <p class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">New Waste Dispatch Request</p>
+          </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <form (ngSubmit)="onSubmit()" #pickupForm="ngForm" class="space-y-8 relative z-10">
+            
+            <div *ngIf="successMessage" class="bg-blue-50 text-blue-700 p-6 rounded-2xl border border-blue-100 flex items-center gap-4 animate-fade-in shadow-inner">
+                <span class="text-2xl">⚡</span>
+                <p class="text-xs font-black uppercase tracking-widest">{{ successMessage }}</p>
+            </div>
 
-    <div
-      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-green-500">
-      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Total Pickups</p>
-      <h3 class="text-5xl font-black text-gray-800 mt-4">
-        {{ totalPickups }}
-      </h3>
-    </div>
+            <div *ngIf="errorMessage" class="bg-red-50 text-red-700 p-6 rounded-2xl border border-red-100 flex items-center gap-4 animate-fade-in shadow-inner">
+                <span class="text-2xl">⚠️</span>
+                <p class="text-xs font-black uppercase tracking-widest">{{ errorMessage }}</p>
+            </div>
 
-    <div
-      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-blue-500">
-      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Completed</p>
-      <h3 class="text-5xl font-black text-gray-800 mt-4">
-        {{ completed }}
-      </h3>
-    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Waste Classification</label>
+                <select [(ngModel)]="wasteType" name="wasteType" class="industrial-input appearance-none bg-gray-50/50">
+                  <option value="plastic">PLASTIC RECOVERY</option>
+                  <option value="paper">PAPER RECYCLING</option>
+                  <option value="metal">METAL EXTRACTION</option>
+                  <option value="organic">ORGANIC PROCESSING</option>
+                  <option value="e-waste">ELECTRONIC WASTE</option>
+                </select>
+              </div>
 
-    <div
-      class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 border-t-8 border-t-yellow-500">
-      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Pending</p>
-      <h3 class="text-5xl font-black text-gray-800 mt-4">
-        {{ pending }}
-      </h3>
-    </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Quantity (KG)</label>
+                <input type="number" [(ngModel)]="quantity" name="quantity" required placeholder="0.00" class="industrial-input">
+              </div>
+            </div>
 
-    <!-- Personal Profile Details Card -->
-    <div
-      class="bg-gradient-to-br from-gray-800 to-black p-8 rounded-3xl shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2 text-white">
-      <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest">Account Details</p>
-      <div class="mt-4 space-y-2">
-        <p class="font-bold text-lg truncate">{{ userName }}</p>
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-green-500"></span>
-          <span class="text-[10px] uppercase font-black tracking-widest text-green-400">Citizen Account</span>
+            <div class="space-y-3">
+              <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Operational Location</label>
+              <input type="text" [(ngModel)]="address" name="address" required placeholder="PHYSICAL ADDRESS / SECTOR" class="industrial-input">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Preferred Execution Date</label>
+                <input type="date" [(ngModel)]="preferredDate" name="preferredDate" required class="industrial-input">
+              </div>
+              <div class="flex items-end">
+                <button type="submit" [disabled]="isSaving || !pickupForm.valid"
+                  class="w-full bg-gray-900 text-white p-6 rounded-[2.2rem] font-black text-sm uppercase tracking-[0.2em] shadow-2xl hover:bg-blue-600 transition-all hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:translate-y-0">
+                  {{ isSaving ? 'Executing...' : 'Start Recovery Mission' }}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-        <p class="text-[10px] text-gray-500 mt-2">Verified WasteZero Member</p>
+
+        <!-- Recent Activity Section -->
+        <div class="bg-white rounded-[3rem] shadow-xl p-10 border border-gray-50">
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-xl font-black text-gray-900 uppercase tracking-tighter">Impact Log</h3>
+            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Historical Data Entry</span>
+          </div>
+
+          <div *ngIf="recentActivity.length === 0" class="text-center py-20 bg-gray-50/50 rounded-[2rem] border-2 border-dashed border-gray-100">
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-xs italic">Awaiting first recovery mission...</p>
+          </div>
+
+          <div class="space-y-4">
+            <div *ngFor="let act of recentActivity"
+              class="flex items-center gap-6 p-6 hover:bg-gray-50 rounded-[2rem] transition border border-transparent hover:border-gray-100 group">
+              <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-white shadow-inner group-hover:scale-110 transition">
+                {{ act.icon }}
+              </div>
+              <div class="flex-1">
+                <p class="font-black text-gray-900 tracking-tight text-lg">{{ act.title }}</p>
+                <p class="text-sm text-gray-400 font-medium">{{ act.desc }}</p>
+              </div>
+              <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">{{ act.time }}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-  </div>
-
-  <!-- Recent Activity Section -->
-  <div class="bg-white rounded-3xl shadow-xl p-8">
-    <h3 class="text-xl font-bold text-gray-800 mb-6">Recent Activity</h3>
-
-    <div *ngIf="recentActivity.length === 0" class="text-center py-10 text-gray-400">
-      <p>No recent activity. Start your first pickup today!</p>
-    </div>
-
-    <div class="space-y-4">
-      <div *ngFor="let act of recentActivity"
-        class="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-2xl transition border-b last:border-b-0">
-        <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl bg-gray-100">
-          {{ act.icon }}
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-gray-800">{{ act.title | titlecase }}</p>
-          <p class="text-sm text-gray-400">{{ act.desc }}</p>
-        </div>
-        <span class="text-xs text-gray-400 font-bold uppercase">{{ act.time }}</span>
+      <!-- Left Side: Stats (Already rendered above as part of original code, but I can put more profile info here) -->
+      <div class="space-y-8">
+          <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-10 rounded-[3rem] text-white shadow-2xl transform hover:-rotate-2 transition cursor-default">
+              <p class="text-blue-200 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Total Carbon Credit</p>
+              <h4 class="text-6xl font-black tracking-tighter">1.2<span class="text-2xl ml-2">tons</span></h4>
+              <div class="mt-8 pt-8 border-t border-blue-500/30 flex justify-between items-center">
+                  <p class="text-xs font-bold text-blue-100 italic">Level 4 Citizen Hero</p>
+                  <div class="flex gap-1">
+                      <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                      <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                      <div class="w-1.5 h-1.5 rounded-full bg-white/30"></div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-gray-100">
+              <h5 class="text-sm font-black text-gray-900 uppercase tracking-widest mb-6">Regional Stats</h5>
+              <div class="space-y-6">
+                  <div class="flex justify-between items-end">
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Neighborhood Recovery</p>
+                      <p class="font-black text-gray-900">84%</p>
+                  </div>
+                  <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div class="w-[84%] h-full bg-green-500 rounded-full"></div>
+                  </div>
+              </div>
+          </div>
       </div>
+
     </div>
-  </div>
 
 </div>

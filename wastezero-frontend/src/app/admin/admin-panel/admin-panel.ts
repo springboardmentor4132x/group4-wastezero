@@ -24,11 +24,13 @@ export class AdminPanel implements OnInit {
   successMessage = '';
 
   opportunities: any[] = [];
+  applications: any[] = [];
 
   constructor(private opportunityService: OpportunityService) { }
 
   ngOnInit(): void {
     this.loadOpportunities();
+    this.loadApplications();
   }
 
   loadOpportunities() {
@@ -38,6 +40,23 @@ export class AdminPanel implements OnInit {
       },
       error: (err) => {
         console.error(err);
+      }
+    });
+  }
+
+  loadApplications() {
+    this.opportunityService.getApplications().subscribe({
+      next: (res: any) => {
+        if (res.success) this.applications = res.data;
+      }
+    });
+  }
+
+  updateApplicationStatus(id: string, status: string) {
+    this.opportunityService.updateApplicationStatus(id, status).subscribe({
+      next: () => {
+        alert("Operation execution successful.");
+        this.loadApplications();
       }
     });
   }

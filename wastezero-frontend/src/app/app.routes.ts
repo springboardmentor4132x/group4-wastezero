@@ -55,6 +55,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./volunteer/opportunities/opportunities').then(m => m.Opportunities),
     canActivate: [authGuard, roleGuard],
+    runGuardsAndResolvers: 'always',
     data: { roles: ['volunteer'] }
   },
   {
@@ -62,6 +63,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./admin/pickups/pickups').then(m => m.AdminPickups),
     canActivate: [authGuard, roleGuard],
+    runGuardsAndResolvers: 'always',
     data: { roles: ['volunteer'] }
   },
 
@@ -93,6 +95,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./admin/pickups/pickups').then(m => m.AdminPickups),
     canActivate: [authGuard, roleGuard],
+    runGuardsAndResolvers: 'always',
     data: { roles: ['admin'] }
   },
 

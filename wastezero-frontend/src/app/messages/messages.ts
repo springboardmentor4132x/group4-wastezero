@@ -17,10 +17,9 @@ export class Messages implements OnInit, OnDestroy {
   newMessage = '';
   messages: any[] = [];
   currentUserId: string | null = '';
-  refreshInterval: any;
-
-  // Search Protocol
   isSearching = false;
+  isLoadingConversations = false;
+  isLoadingMessages = false;
   searchQuery = '';
   searchResults: any[] = [];
 
@@ -28,25 +27,41 @@ export class Messages implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUserId = localStorage.getItem('userId');
+    if (this.currentUserId) {
+      this.messageService.joinRoom(this.currentUserId);
+    }
     this.loadConversations();
 
-    // Industrial Sim-Realtime (Polling)
-    this.refreshInterval = setInterval(() => {
-      if (this.selectedChat && !this.isSearching) {
-        this.loadMessages(this.selectedChat._id);
+    // Real-time socket listener
+    this.messageService.onNewMessage().subscribe({
+      next: (data: any) => {
+        // Only add if it's from the currently selected chat
+        if (this.selectedChat && data.sender === this.selectedChat._id) {
+          const msg = {
+            text: data.content,
+            sent: false,
+            time: new Date(data.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          this.messages.push(msg);
+          this.scrollToBottom();
+        } else {
+          // Update conversation list to show new message/notification
+          this.loadConversations();
+        }
       }
-    }, 4000);
+    });
   }
 
-  ngOnDestroy(): void {
-    if (this.refreshInterval) clearInterval(this.refreshInterval);
-  }
+  ngOnDestroy(): void {}
 
   loadConversations() {
+    this.isLoadingConversations = true;
     this.messageService.getChatUsers().subscribe({
       next: (res: any) => {
+        this.isLoadingConversations = false;
         if (res.success) this.conversations = res.data;
-      }
+      },
+      error: () => this.isLoadingConversations = false
     });
   }
 
@@ -76,21 +91,20 @@ export class Messages implements OnInit, OnDestroy {
   }
 
   loadMessages(otherUserId: string) {
+    this.isLoadingMessages = true;
     this.messageService.getMessages(otherUserId).subscribe({
       next: (res: any) => {
+        this.isLoadingMessages = false;
         if (res.success) {
-          const oldLen = this.messages.length;
           this.messages = (res.data as any[]).map(m => ({
             text: m.content,
             sent: m.sender === this.currentUserId,
             time: new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }));
-
-          if (this.messages.length > oldLen) {
-            this.scrollToBottom();
-          }
+          this.scrollToBottom();
         }
-      }
+      },
+      error: () => this.isLoadingMessages = false
     });
   }
 
@@ -103,7 +117,13 @@ export class Messages implements OnInit, OnDestroy {
     this.messageService.sendMessage(this.selectedChat._id, content).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.loadMessages(this.selectedChat._id);
+          // Optimistically add the message to the list
+          this.messages.push({
+            text: content,
+            sent: true,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          });
+          this.scrollToBottom();
           this.loadConversations(); // Update list order/existence
         }
       }

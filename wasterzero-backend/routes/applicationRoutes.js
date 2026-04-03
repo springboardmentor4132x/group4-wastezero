@@ -16,11 +16,10 @@ router.post(
 );
 
 
-// Admin View Applications
+// View Applications
 router.get(
   "/",
   authMiddleware,
-  roleMiddleware("admin"),
   applicationController.getApplications
 );
 

@@ -13,26 +13,60 @@ export class Opportunities implements OnInit {
 
   opportunities: any[] = [];
   appliedSet = new Set<string>();
+  userName: string | null = '';
+  isLoading = false;
 
   constructor(private opportunityService: OpportunityService) { }
 
   ngOnInit(): void {
-    this.loadOpportunities();
+    this.userName = localStorage.getItem('name');
+    this.loadAllData();
   }
 
-  loadOpportunities() {
-    this.opportunityService.getOpportunities().subscribe({
-      next: (res: any) => {
-        this.opportunities = res.data;
-      },
-      error: (err) => {
-        console.error(err);
-      }
+  loadAllData() {
+    this.isLoading = true;
+    Promise.all([
+      this.loadOpportunitiesPromise(),
+      this.loadApplicationsPromise()
+    ]).finally(() => {
+      this.isLoading = false;
+    });
+  }
+
+  loadOpportunitiesPromise(): Promise<void> {
+    return new Promise((resolve) => {
+      this.opportunityService.getOpportunities().subscribe({
+        next: (res: any) => {
+          this.opportunities = res.data;
+          resolve();
+        },
+        error: () => resolve()
+      });
+    });
+  }
+
+  loadApplicationsPromise(): Promise<void> {
+    return new Promise((resolve) => {
+      this.opportunityService.getApplications().subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            const userId = localStorage.getItem('userId');
+            res.data.forEach((app: any) => {
+              const appVolunteerId = app.volunteer_id?._id || app.volunteer_id;
+              if (appVolunteerId?.toString() === userId?.toString()) {
+                const oppId = app.opportunity_id?._id || app.opportunity_id;
+                if (oppId) this.appliedSet.add(oppId.toString());
+              }
+            });
+          }
+          resolve();
+        },
+        error: () => resolve()
+      });
     });
   }
 
   apply(opportunity_id: string) {
-
     this.opportunityService.applyOpportunity(opportunity_id)
       .subscribe({
         next: () => {
@@ -46,7 +80,6 @@ export class Opportunities implements OnInit {
           }
         }
       });
-
   }
 
 }

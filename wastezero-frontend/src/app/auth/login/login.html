@@ -61,6 +61,12 @@
         </div>
       </div>
 
+      <!-- Status Feedback -->
+      <div *ngIf="successMessage"
+        class="bg-emerald-50/80 backdrop-blur border border-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-widest p-5 rounded-3xl text-center shadow-lg shadow-emerald-500/5 animate-fade-in">
+        ✅ Identity Established: {{ successMessage }}
+      </div>
+
       <!-- Fault Log -->
       <div *ngIf="errorMessage"
         class="bg-red-50/80 backdrop-blur border border-red-100 text-red-600 text-[10px] font-black uppercase tracking-widest p-5 rounded-3xl text-center shadow-lg shadow-red-500/5">

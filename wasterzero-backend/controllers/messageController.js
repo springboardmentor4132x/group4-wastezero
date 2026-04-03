@@ -1,16 +1,45 @@
-const Message = require('../models/Message');
 const User = require('../models/User');
+const notificationController = require('./notificationController');
+const Message = require('../models/Message');
 
 // SEND MESSAGE
 exports.sendMessage = async (req, res) => {
     try {
         const { receiverId, content } = req.body;
+
+        if (!receiverId || !content) {
+            return res.status(400).json({ success: false, message: "Receiver ID and content are required" });
+        }
+
+        const receiverExists = await User.findById(receiverId);
+        if (!receiverExists) {
+            return res.status(404).json({ success: false, message: "Recipient user not found" });
+        }
+
         const message = new Message({
             sender: req.user.id,
             receiver: receiverId,
             content
         });
         await message.save();
+
+        const io = req.app.get("io");
+        io.to(receiverId).emit("receive_message", {
+            sender: req.user.id,
+            receiver: receiverId,
+            content,
+            createdAt: message.createdAt
+        });
+
+        // Add Notification Trigger (Persistent)
+        const sender = await User.findById(req.user.id);
+        notificationController.createAndNotify(req.app, {
+            userId: receiverId,
+            title: "New Message",
+            message: `You received a message from ${sender.name}`,
+            type: "message"
+        });
+
         res.status(201).json({ success: true, data: message });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });

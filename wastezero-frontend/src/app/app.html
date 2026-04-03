@@ -1,6 +1,11 @@
+<!-- Global Loading Bar -->
+<div id="global-loader"></div>
+
 <!-- AUTH PAGES (NO SIDEBAR) -->
 <ng-container *ngIf="isAuthPage(); else mainLayout">  
-  <router-outlet></router-outlet>
+  <div class="page-container">
+    <router-outlet></router-outlet>
+  </div>
 </ng-container>
 
 <!-- MAIN APP LAYOUT -->

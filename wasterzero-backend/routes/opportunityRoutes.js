@@ -21,6 +21,12 @@ router.get(
   opportunityController.getAllOpportunities
 );
 
+router.get(
+  "/recommended",
+  authMiddleware,
+  opportunityController.getRecommendedOpportunities
+);
+
 router.delete(
   "/:id",
   authMiddleware,

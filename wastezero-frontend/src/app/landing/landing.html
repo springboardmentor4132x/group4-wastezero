@@ -1,130 +1,235 @@
-<div class="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-green-100 selection:text-green-700">
+<div class="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-green-100 selection:text-green-700 relative overflow-x-hidden">
 
-  <!-- Premium Gradient Orbs -->
-  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-    <div
-      class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-200/40 rounded-full blur-[120px] animate-pulse">
-    </div>
-    <div
-      class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-100/40 rounded-full blur-[120px] animate-pulse"
-      style="animation-delay: 2s;"></div>
-  </div>
-
-  <!-- NAVBAR -->
-  <header class="max-w-7xl mx-auto px-8 py-8 flex justify-between items-center animate-fade-in">
-    <div class="flex items-center gap-3 group cursor-pointer">
-      <div
-        class="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center text-2xl shadow-xl group-hover:rotate-12 transition duration-500">
-        🌱</div>
-      <h1 class="text-3xl font-black tracking-tighter text-gray-900 uppercase">
-        Waste<span class="text-green-600">Zero</span>
-      </h1>
+    <!-- Premium Dynamic Background -->
+    <div class="fixed inset-0 -z-10 pointer-events-none">
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-emerald-100/30 rounded-full blur-[160px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-100/30 rounded-full blur-[160px] animate-pulse-slow" style="animation-delay: 4s;"></div>
+        <div class="absolute top-[40%] left-[20%] w-[10%] h-[10%] bg-green-200/20 rounded-full blur-[80px]"></div>
     </div>
 
-    <nav class="hidden md:flex gap-10 items-center">
-      <a href="#"
-        class="text-sm font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Mission</a>
-      <a href="#"
-        class="text-sm font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Community</a>
-      <a href="#"
-        class="text-sm font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Impact</a>
-
-      <div *ngIf="!isLoggedIn; else userLinks" class="flex gap-4 ml-6">
-        <a routerLink="/login"
-          class="px-8 py-4 font-black uppercase tracking-widest text-xs text-gray-700 hover:bg-gray-100 rounded-2xl transition">Sign
-          In</a>
-        <a routerLink="/register"
-          class="px-8 py-4 bg-gray-900 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-2xl hover:bg-black hover:-translate-y-1 transition active:translate-y-0">Join
-          Project</a>
-      </div>
-      <ng-template #userLinks>
-        <button (click)="goToDashboard()"
-          class="px-8 py-4 bg-green-600 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-2xl hover:bg-green-700 hover:-translate-y-1 transition active:translate-y-0">
-          Go to Account ({{ userName }})
-        </button>
-      </ng-template>
-    </nav>
-  </header>
-
-  <!-- HERO SECTION -->
-  <main class="max-w-7xl mx-auto px-8 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-
-    <div class="space-y-10 animate-fade-up">
-      <div class="inline-flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full border border-green-100">
-        <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-        <span class="text-[10px] font-black uppercase tracking-widest text-green-700">The Future of Recycling</span>
-      </div>
-
-      <h2 class="text-7xl md:text-8xl font-black tracking-tight text-gray-900 leading-[0.9]">
-        Zero Waste.<br>
-        <span class="text-green-600">Zero Complexity.</span>
-      </h2>
-
-      <p class="text-xl text-gray-400 font-medium leading-relaxed max-w-lg">
-        The leading industrial platform for smart waste pickup & recycling. Connect with a professional network of
-        volunteers and track your environmental footprints in real-time.
-      </p>
-
-      <div class="flex flex-wrap gap-6">
-        <button routerLink="/register"
-          class="group px-10 py-6 bg-gray-900 text-white rounded-[2rem] font-black uppercase tracking-widest text-sm shadow-2xl hover:bg-black hover:-translate-y-1.5 transition active:translate-y-0 flex items-center gap-3">
-          Start Recycling ⚡
-        </button>
-        <button
-          class="px-10 py-6 bg-white border border-gray-100 text-gray-900 rounded-[2rem] font-black uppercase tracking-widest text-sm shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1.5 transition active:translate-y-0">
-          Learn More
-        </button>
-      </div>
-
-      <div class="pt-10 flex gap-12 items-center">
-        <div class="text-center">
-          <p class="text-3xl font-black text-gray-900 italic">500+</p>
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Active Users</p>
-        </div>
-        <div class="w-px h-10 bg-gray-200"></div>
-        <div class="text-center">
-          <p class="text-3xl font-black text-gray-900 italic">1.2M</p>
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">KG Recycled</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative animate-fade-in group">
-      <div
-        class="absolute inset-0 bg-green-500/10 rounded-[4rem] rotate-6 scale-95 group-hover:rotate-12 transition-all duration-700">
-      </div>
-      <div class="relative bg-white p-4 rounded-[4rem] shadow-2xl border border-gray-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1591193022657-199cab182c29?auto=format&fit=crop&w=1200&q=80"
-          alt="Recycling Impact"
-          class="w-full h-auto rounded-[3.5rem] grayscale hover:grayscale-0 transition duration-1000 object-cover aspect-[4/5]">
-
-        <div class="absolute bottom-12 left-12 right-12 glass p-8 rounded-[2rem] shadow-2xl animate-fade-up">
-          <div class="flex justify-between items-center">
-            <div>
-              <p class="text-[10px] font-black uppercase tracking-widest text-green-600 mb-1">Live Statistics</p>
-              <h4 class="text-2xl font-black text-gray-900 leading-none">98% Efficient</h4>
+    <!-- NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-2xl border-b border-gray-100/50">
+        <div class="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center animate-fade-in">
+            <div class="flex items-center gap-4 group cursor-pointer" routerLink="/">
+                <div class="w-12 h-12 bg-gray-900 text-white rounded-[1.5rem] flex items-center justify-center text-2xl shadow-2xl group-hover:rotate-12 transition duration-500">
+                    🌱
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter text-gray-900 uppercase leading-none">
+                        Waste<span class="text-emerald-500">Zero</span>
+                    </h1>
+                    <p class="text-[8px] font-black uppercase tracking-[0.4em] text-gray-400 mt-1 opacity-70">Industrial Protocol</p>
+                </div>
             </div>
-            <div class="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white">📈</div>
-          </div>
+
+            <nav class="hidden lg:flex gap-12 items-center">
+                <a href="#mission" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-500 transition-all hover:scale-110">Mission</a>
+                <a href="#community" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-500 transition-all hover:scale-110">System</a>
+                <a href="#impact" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-500 transition-all hover:scale-110">Impact</a>
+
+                <div *ngIf="!isLoggedIn; else userLinks" class="flex gap-4 ml-8">
+                    <button routerLink="/login" class="px-8 py-3.5 font-black uppercase tracking-widest text-[10px] text-gray-600 hover:bg-gray-100 rounded-2xl transition">Sign In</button>
+                    <button routerLink="/register" class="px-10 py-3.5 bg-gray-900 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl shadow-gray-200/50 shadow-2xl hover:bg-emerald-600 hover:-translate-y-1 transition active:translate-y-0">
+                        Join Platform
+                    </button>
+                </div>
+                <ng-template #userLinks>
+                    <button (click)="goToDashboard()" class="px-10 py-3.5 bg-emerald-500 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl shadow-emerald-500/20 shadow-2xl hover:bg-emerald-600 hover:-translate-y-1 transition active:translate-y-0">
+                        Dashboard ({{ userName }})
+                    </button>
+                </ng-template>
+            </nav>
         </div>
-      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-8 pt-56 pb-24 md:pb-40 grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+        
+        <div class="lg:col-span-7 space-y-12 animate-fade-up">
+            <div class="inline-flex items-center gap-3 bg-emerald-50 px-6 py-2.5 rounded-full border border-emerald-100 hover:bg-emerald-100 transition-all cursor-crosshair">
+                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-800">Operational System v4.0</span>
+            </div>
+
+            <h2 class="text-[clamp(3.5rem,8vw,6.5rem)] font-black tracking-tight text-gray-950 leading-[0.85]">
+                Zero Waste.<br>
+                <span class="text-emerald-500 opacity-90">Digital Trust.</span>
+            </h2>
+
+            <p class="text-xl text-gray-500 font-medium leading-relaxed max-w-xl">
+                The world's leading industrial platform for decentralized waste management. Connect with professionals, coordinate pickups, and audit environmental impact in real-time.
+            </p>
+
+            <div class="flex flex-wrap gap-8">
+                <button routerLink="/register" class="group px-12 py-7 bg-gray-950 text-white rounded-[2.5rem] font-black uppercase tracking-widest text-xs shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] hover:bg-emerald-600 hover:-translate-y-2 transition-all duration-500 active:scale-95 flex items-center gap-4">
+                    Deploy Application ⚡
+                </button>
+                <button class="px-12 py-7 bg-white border border-gray-100 text-gray-950 rounded-[2.5rem] font-black uppercase tracking-widest text-xs shadow-xl hover:shadow-gray-200/50 hover:bg-gray-50 hover:-translate-y-2 transition-all duration-500 active:scale-95">
+                    View Network
+                </button>
+            </div>
+
+            <div class="pt-12 flex gap-12 items-center">
+                <div class="space-y-1">
+                    <p class="text-4xl font-black text-gray-950 italic tracking-tighter">{{ activeUsers }}+</p>
+                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">Network Participants</p>
+                </div>
+                <div class="w-px h-12 bg-gray-200"></div>
+                <div class="space-y-1">
+                    <p class="text-4xl font-black text-gray-950 italic tracking-tighter">{{ kgRecycled | number }}</p>
+                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.3em]">Audited Impact (KG)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5 relative animate-fade-in group">
+            <div class="absolute inset-0 bg-emerald-500/10 rounded-[5rem] rotate-6 scale-95 group-hover:rotate-12 transition-all duration-1000 blur-xl"></div>
+            <div class="relative bg-white/40 backdrop-blur-md p-6 rounded-[5rem] shadow-2xl border border-white/50 overflow-hidden ring-1 ring-black/5 animate-float">
+                <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80" 
+                     alt="Waste Zero Future" 
+                     class="w-full h-auto rounded-[4rem] grayscale group-hover:grayscale-0 transition duration-1000 object-cover aspect-[4/5]">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div class="absolute bottom-12 left-12 right-12 glass shadow-emerald-500/10 shadow-2xl p-10 rounded-[2.5rem] animate-fade-up">
+                    <div class="flex justify-between items-center">
+                        <div class="space-y-2">
+                            <p class="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500">Impact Audit</p>
+                            <h4 class="text-3xl font-black text-gray-950 tracking-tighter">{{ efficiency }}% Efficiency</h4>
+                        </div>
+                        <div class="w-14 h-14 bg-emerald-500 text-white rounded-3xl flex items-center justify-center text-2xl shadow-xl animate-pulse">
+                            📊
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPACT MARQUEE -->
+    <div class="w-full bg-gray-950 py-16 overflow-hidden relative">
+        <div class="flex gap-20 items-center animate-marquee whitespace-nowrap">
+            <div *ngFor="let i of [1,2,3,4,5]" class="flex gap-20 items-center">
+                <h3 class="text-5xl lg:text-7xl font-black text-white/5 uppercase tracking-tighter select-none">Sustainable Future</h3>
+                <div class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
+                <h3 class="text-5xl lg:text-7xl font-black text-white/5 uppercase tracking-tighter select-none">Industrial Protocol</h3>
+                <div class="w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.5)]"></div>
+                <h3 class="text-5xl lg:text-7xl font-black text-white/5 uppercase tracking-tighter select-none">Zero Emissions</h3>
+                <div class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
+            </div>
+        </div>
     </div>
 
-  </main>
+    <!-- SERVICES / CATEGORIES -->
+    <section class="max-w-7xl mx-auto px-8 py-40">
+        <div class="text-center mb-24 space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-emerald-500">Operation Scopes</p>
+            <h2 class="text-5xl font-black tracking-tight text-gray-950 uppercase italic tracking-tighter">Circular Economy Backbone</h2>
+        </div>
 
-  <!-- FOOTER / INDUSTRIAL TRUST -->
-  <footer
-    class="max-w-7xl mx-auto px-8 py-20 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-10">
-    <p class="text-xs font-black uppercase tracking-widest text-gray-400">© 2026 WasteZero Industrial Platform. All
-      Rights Reserved.</p>
-    <div class="flex gap-10">
-      <a href="#"
-        class="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Privacy</a>
-      <a href="#"
-        class="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Terms</a>
-      <a href="#"
-        class="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition">Discord</a>
-    </div>
-  </footer>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- REUSE -->
+            <div class="group p-10 bg-white rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-[0_48px_80px_-24px_rgba(0,0,0,0.06)] hover:-translate-y-4 transition-all duration-700 relative overflow-hidden">
+                <div class="absolute top-[-20%] right-[-20%] w-32 h-32 bg-emerald-50 rounded-full group-hover:scale-150 transition-all duration-700"></div>
+                <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-[2rem] flex items-center justify-center text-4xl mb-12 shadow-inner group-hover:scale-110 transition duration-500 relative z-10">📦</div>
+                <h4 class="text-2xl font-black text-gray-950 mb-4 tracking-tighter relative z-10">Smart <br>Reuse</h4>
+                <p class="text-gray-500 text-sm font-medium leading-relaxed relative z-10">Direct logistics for industrial surplus and reusable assets.</p>
+            </div>
+
+            <!-- RECYCLE -->
+            <div class="group p-10 bg-white rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-[0_48px_80px_-24px_rgba(0,0,0,0.06)] hover:-translate-y-4 transition-all duration-700 relative overflow-hidden">
+                <div class="absolute top-[-20%] right-[-20%] w-32 h-32 bg-blue-50 rounded-full group-hover:scale-150 transition-all duration-700"></div>
+                <div class="w-20 h-20 bg-blue-50 text-blue-500 rounded-[2rem] flex items-center justify-center text-4xl mb-12 shadow-inner group-hover:scale-110 transition duration-500 relative z-10">♻️</div>
+                <h4 class="text-2xl font-black text-gray-950 mb-4 tracking-tighter relative z-10">High-Fid <br>Recycling</h4>
+                <p class="text-gray-500 text-sm font-medium leading-relaxed relative z-10">Real-time coordinate tracking for multi-stage recycling processes.</p>
+            </div>
+
+            <!-- COMPOST -->
+            <div class="group p-10 bg-white rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-[0_48px_80px_-24px_rgba(0,0,0,0.06)] hover:-translate-y-4 transition-all duration-700 relative overflow-hidden">
+                <div class="absolute top-[-20%] right-[-20%] w-32 h-32 bg-amber-50 rounded-full group-hover:scale-150 transition-all duration-700"></div>
+                <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-[2rem] flex items-center justify-center text-4xl mb-12 shadow-inner group-hover:scale-110 transition duration-500 relative z-10">🍂</div>
+                <h4 class="text-2xl font-black text-gray-950 mb-4 tracking-tighter relative z-10">Organic <br>Processing</h4>
+                <p class="text-gray-500 text-sm font-medium leading-relaxed relative z-10">Bio-track technology for agricultural and organic waste management.</p>
+            </div>
+
+            <!-- DONATE -->
+            <div class="group p-10 bg-white rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-[0_48px_80px_-24px_rgba(0,0,0,0.06)] hover:-translate-y-4 transition-all duration-700 relative overflow-hidden">
+                <div class="absolute top-[-20%] right-[-20%] w-32 h-32 bg-rose-50 rounded-full group-hover:scale-150 transition-all duration-700"></div>
+                <div class="w-20 h-20 bg-rose-50 text-rose-500 rounded-[2rem] flex items-center justify-center text-4xl mb-12 shadow-inner group-hover:scale-110 transition duration-500 relative z-10">🤝</div>
+                <h4 class="text-2xl font-black text-gray-950 mb-4 tracking-tighter relative z-10">Community <br>Donations</h4>
+                <p class="text-gray-500 text-sm font-medium leading-relaxed relative z-10">Secure redistribution to verified partner NGOs and social charities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA SECTION -->
+    <section class="max-w-7xl mx-auto px-8 py-40 mb-20 animate-fade-up">
+        <div class="relative bg-gray-950 rounded-[5.5rem] p-24 md:p-32 overflow-hidden shadow-[0_80px_160px_-40px_rgba(0,0,0,0.4)]">
+            <div class="absolute top-[-40%] left-[-20%] w-[80%] h-[120%] bg-emerald-500/10 rounded-full blur-[160px]"></div>
+            <div class="absolute bottom-[-40%] right-[-20%] w-[80%] h-[120%] bg-blue-500/10 rounded-full blur-[160px]"></div>
+            
+            <div class="relative z-10 text-center max-w-4xl mx-auto space-y-12">
+                <div class="w-24 h-24 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl flex items-center justify-center mx-auto mb-16 text-5xl">⚡</div>
+                <h2 class="text-6xl md:text-8xl font-black text-white tracking-tighter leading-[0.85]">Ready to Secure the <span class="text-emerald-400">Environment?</span></h2>
+                <p class="text-xl text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">Join 2,500+ operators and volunteers establishing the new standard of environmental trust.</p>
+                <div class="pt-10 flex flex-wrap justify-center gap-8">
+                    <button routerLink="/register" class="px-14 py-8 bg-emerald-500 text-gray-950 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-white hover:-translate-y-2 hover:scale-105 transition-all duration-500 shadow-2xl shadow-emerald-500/30">
+                        Join Protocol
+                    </button>
+                    <button routerLink="/login" class="px-14 py-8 bg-white/5 border border-white/10 text-white rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-white/10 hover:-translate-y-2 transition-all duration-500">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-8 py-24 border-t border-gray-100">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-20">
+            <div class="space-y-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center text-2xl">🌱</div>
+                    <h2 class="text-3xl font-black tracking-tighter">WasteZero</h2>
+                </div>
+                <p class="text-sm font-bold text-gray-400 max-w-sm uppercase tracking-widest leading-loose">Establishing the world's most trusted decentralized recycling infrastructure since 2026.</p>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-20">
+                <div class="space-y-8">
+                    <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500">System</h5>
+                    <ul class="space-y-6">
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Network</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Protocol</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Audit Log</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-8">
+                    <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500">Company</h5>
+                    <ul class="space-y-6">
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Mission</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Transparency</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">News</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-8">
+                    <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500">Legal</h5>
+                    <ul class="space-y-6">
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Privacy</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Terms</a></li>
+                        <li><a href="#" class="text-xs font-black text-gray-400 hover:text-gray-900 transition">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-40 flex flex-col md:flex-row justify-between items-center gap-10">
+            <p class="text-[9px] font-black uppercase tracking-[0.5em] text-gray-300">© 2026 WasteZero Industrial. Handcrafted for a sustainable world.</p>
+            <div class="flex gap-8">
+                <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:bg-emerald-50 hover:text-emerald-500 transition cursor-pointer">𝕏</div>
+                <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:bg-emerald-50 hover:text-emerald-500 transition cursor-pointer">👾</div>
+                <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:bg-emerald-50 hover:text-emerald-500 transition cursor-pointer">💼</div>
+            </div>
+        </div>
+    </footer>
 
 </div>

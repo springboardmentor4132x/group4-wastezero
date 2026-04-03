@@ -4,8 +4,13 @@ const jwt = require("jsonwebtoken");
 
 // REGISTER
 exports.register = async (req, res) => {
+  console.log("📥 Registration request:", { ...req.body, password: "****" });
   try {
-    const { name, email, password, role, location } = req.body;
+    const { name, email, password, role, location, skills } = req.body;
+    
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({ success: false, message: "Missing required identity fields" });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -20,7 +25,8 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      location
+      location,
+      skills: skills || []
     });
 
     await newUser.save();
@@ -33,8 +39,13 @@ exports.register = async (req, res) => {
 
 // LOGIN
 exports.login = async (req, res) => {
+  console.log("📥 Login request:", { ...req.body, password: "****" });
   try {
     const { email, password } = req.body;
+    
+    if (!email || !password) {
+        return res.status(400).json({ success: false, message: "Identification and signature required" });
+    }
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -78,10 +89,10 @@ exports.getProfile = async (req, res) => {
 // UPDATE PROFILE
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, location } = req.body;
+    const { name, location, skills } = req.body;
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { name, location },
+      { name, location, skills },
       { new: true }
     ).select("-password");
     res.json({ success: true, data: user });

@@ -2,27 +2,42 @@ const Pickup = require('../models/Pickup');
 
 // CREATE PICKUP
 exports.createPickup = async (req, res) => {
+    console.log("🚚 Creating pickup request:", { ...req.body, user: req.user?.id });
     try {
         const { wasteType, quantity, address, preferredDate, notes } = req.body;
+        
+        if (!wasteType || !quantity || !address || !preferredDate) {
+            return res.status(400).json({ success: false, message: "Required fields missing (Identity, Quantity, Vector, or Date)" });
+        }
+
         const pickup = new Pickup({
             user_id: req.user.id,
             wasteType,
-            quantity,
+            quantity: Number(quantity),
             address,
-            preferredDate,
+            preferredDate: new Date(preferredDate),
             notes
         });
+
         await pickup.save();
+        console.log("✅ Pickup saved successfully:", pickup._id);
         res.status(201).json({ success: true, message: "Pickup scheduled successfully!", data: pickup });
     } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        console.error("🔥 PICKUP CREATION FAULT:", err);
+        res.status(500).json({ success: false, message: "Vector coordinates rejected: " + err.message });
     }
 };
 
-// GET USER'S PICKUPS (Citizen)
+// GET USER'S PICKUPS (Citizen or assigned Volunteer)
 exports.getMyPickups = async (req, res) => {
     try {
-        const pickups = await Pickup.find({ user_id: req.user.id }).sort({ createdAt: -1 });
+        const query = {
+            $or: [
+                { user_id: req.user.id },
+                { volunteer_id: req.user.id }
+            ]
+        };
+        const pickups = await Pickup.find(query).sort({ createdAt: -1 });
         res.json({ success: true, data: pickups });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
@@ -53,11 +68,17 @@ exports.getAvailablePickups = async (req, res) => {
 exports.updatePickupStatus = async (req, res) => {
     try {
         const { status } = req.body;
-        const pickup = await Pickup.findByIdAndUpdate(
-            req.params.id,
-            { status, volunteer_id: req.user.id },
-            { new: true }
-        );
+        const updateData = { status };
+
+        // If a volunteer accepts, set their ID
+        if (status === 'accepted' || status === 'on-the-way') {
+            updateData.volunteer_id = req.user.id;
+        }
+
+        const pickup = await Pickup.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        
+        if (!pickup) return res.status(404).json({ success: false, message: "Pickup not found" });
+
         res.json({ success: true, message: `Status updated to ${status}`, data: pickup });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });

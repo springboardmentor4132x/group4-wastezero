@@ -20,7 +20,13 @@ export class AdminPickups implements OnInit {
 
     loadPickups() {
         this.isLoading = true;
-        this.userService.getAllPickups().subscribe({
+        const role = localStorage.getItem('role');
+
+        const apiCall = (role === 'volunteer') 
+            ? this.userService.getAvailablePickups() 
+            : this.userService.getAllPickups();
+
+        apiCall.subscribe({
             next: (res: any) => {
                 this.isLoading = false;
                 if (res.success) this.pickups = res.data;

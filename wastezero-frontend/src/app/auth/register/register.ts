@@ -16,6 +16,7 @@ export class Register {
   registerForm: FormGroup;
   isLoading: boolean = false;
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -52,11 +53,13 @@ export class Register {
       .subscribe({
         next: (res: any) => {
           console.log("Registration Response:", res);
-          this.isLoading = false;
           // Robust success check
           if (res && (res.success === true || res.status === 201)) {
+            this.successMessage = "Account Protocol Established. Accessing Identity Server...";
+            this.isLoading = false;
             this.router.navigate(['/login']);
           } else {
+            this.isLoading = false;
             this.errorMessage = res.message || 'Registration failed. Please check your data.';
           }
         },

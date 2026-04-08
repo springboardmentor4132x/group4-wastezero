@@ -14,7 +14,7 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const pickupRoutes = require("./routes/pickupRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
-
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 const server = http.createServer(app);
 
@@ -68,6 +68,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/pickups", pickupRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

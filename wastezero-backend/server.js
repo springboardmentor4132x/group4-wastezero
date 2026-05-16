@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
+const compression = require("compression");
+const helmet = require("helmet");
 const { Server } = require("socket.io");
 
 const connectDB = require("./config/db");
@@ -58,6 +60,8 @@ io.on("connection", (socket) => {
 connectDB();
 
 // Middlewares
+app.use(helmet());
+app.use(compression());
 app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:4200",
   credentials: true

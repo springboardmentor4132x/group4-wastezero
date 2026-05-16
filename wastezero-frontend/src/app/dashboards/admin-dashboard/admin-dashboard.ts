@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -21,7 +22,7 @@ export class AdminDashboard implements OnInit {
   recentPickups: any[] = [];
   isLoading = true;
 
-  private apiUrl = 'http://localhost:5000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,

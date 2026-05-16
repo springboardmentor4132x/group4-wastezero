@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-reports',
@@ -15,7 +16,7 @@ export class Reports implements OnInit {
   isLoading = true;
   activeTab: 'overview' | 'users' | 'pickups' | 'opportunities' | 'volunteers' = 'overview';
 
-  private apiUrl = 'http://localhost:5000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
